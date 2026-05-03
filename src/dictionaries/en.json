@@ -25,7 +25,8 @@
     "noCard": "No credit card",
     "noContract": "No contract",
     "cancelAnytime": "Cancel anytime",
-    "workshops": "10,000+ workshops"
+    "workshops": "10,000+ workshops",
+    "schemaTrust": "Structured offers and FAQs we publish match the content visible on each page—not generic third‑party reviews."
   },
   "common": {
     "startFreeTrial": "Start Free 7-Day Trial",
@@ -46,6 +47,22 @@
       "keywords": "auto repair data, OEM manuals, wiring diagrams, DTC codes, TSBs, Identifix, ALLDATA alternative, AutoData alternative, workshop software",
       "defaultTitle": "Auto Fix Data | Premium OEM Repair Data for Modern Workshops",
       "defaultDesc": "Get instant access to OEM-verified repair procedures, colour wiring diagrams, real-world fixes, and TSBs for 150M+ vehicles across 7 global markets."
+    },
+    "cookieConsent": {
+      "title": "Cookies and privacy",
+      "body": "We use essential cookies to run the site. Analytics, chat and marketing extras load only if you choose “Accept all”. You can switch to essential-only anytime via your browser.",
+      "acceptAll": "Accept all",
+      "essentialOnly": "Essential only",
+      "privacyLink": "Cookie & GDPR policy"
+    },
+    "searchPage": {
+      "title": "Search",
+      "description": "Search repair manuals and DTC fault codes.",
+      "resultsFor": "Results for",
+      "noQuery": "Enter at least 2 characters in the search bar above.",
+      "noResults": "No results found.",
+      "ctaSearchBar": "Open site search box in the navigation",
+      "viewAllResults": "Open full search page"
     },
     "coverageHeading": "Coverage Across All Major Makes",
     "coverageSub": "OEM data for 150+ vehicle manufacturers — 1990 to present"

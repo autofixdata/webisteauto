@@ -25,7 +25,8 @@
     "noCard": "Nessuna carta di credito",
     "noContract": "Nessun contratto",
     "cancelAnytime": "Annulla in qualsiasi momento",
-    "workshops": "Oltre 10.000 officine"
+    "workshops": "Oltre 10.000 officine",
+    "schemaTrust": "Dati strutturati e FAQ corrispondono al contenuto visibile su ogni pagina."
   },
   "common": {
     "startFreeTrial": "Prova gratuita di 7 giorni",
@@ -46,6 +47,22 @@
       "keywords": "dati riparazione auto, manuali OEM, schemi elettrici, codici DTC, TSB, alternativa ALLDATA, software officina",
       "defaultTitle": "Auto Fix Data | Dati Riparazione OEM Premium per Officine Moderne",
       "defaultDesc": "Ottieni accesso immediato a procedure OEM verificate, schemi elettrici a colori, soluzioni reali e TSB per oltre 150 milioni di veicoli in 7 mercati globali."
+    },
+    "cookieConsent": {
+      "title": "Cookie e privacy",
+      "body": "I cookie essenziali sono necessari al funzionamento. Analisi, chat e marketing si attivano solo con «Accetta tutto».",
+      "acceptAll": "Accetta tutto",
+      "essentialOnly": "Solo essenziali",
+      "privacyLink": "Cookie & GDPR"
+    },
+    "searchPage": {
+      "title": "Cerca",
+      "description": "Cerca manuali di riparazione e codici errore DTC.",
+      "resultsFor": "Risultati per",
+      "noQuery": "Digita almeno 2 caratteri nella ricerca in alto.",
+      "noResults": "Nessun risultato.",
+      "ctaSearchBar": "Apri la ricerca nel menu",
+      "viewAllResults": "Apri pagina di ricerca"
     },
     "coverageHeading": "Copertura di Tutti i Principali Marchi",
     "coverageSub": "Dati OEM per oltre 150 produttori di veicoli — dal 1990 ad oggi"

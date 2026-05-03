@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from '@/components/LocalizedLink';
 import { getDictionary } from '@/dictionaries/getDictionary';
 import { unslugify, getTopModelsToPrerender } from '@/lib/carData';
@@ -133,9 +134,11 @@ export default async function YearDetailPage({ params }: { params: Promise<{ lan
         {/* Left Sidebar Menu */}
         <aside className="hidden md:flex flex-col w-[260px] bg-[#2d2d2d] border-r border-[#1a1a1a] shadow-xl relative z-10 shrink-0">
           <div className="p-6 border-b border-[#1f1f1f] flex flex-col items-center justify-center text-center">
-            <img
+            <Image
               src={`/images/logos/${make}.png`}
               alt={makeName}
+              width={160}
+              height={40}
               className="h-10 w-auto object-contain filter brightness-0 invert opacity-70 mb-3"
             />
             <h3 className="text-white font-bold text-sm tracking-wide">{modelName}</h3>
@@ -162,7 +165,7 @@ export default async function YearDetailPage({ params }: { params: Promise<{ lan
           {/* Header Area */}
           <div className="bg-white border-b border-gray-200 px-6 lg:px-10 py-6 flex items-center gap-5 shadow-sm">
             <div className="w-14 h-14 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center p-2 shrink-0">
-              <img src={`/images/logos/${make}.png`} alt={makeName} className="w-full h-full object-contain opacity-80" />
+              <Image src={`/images/logos/${make}.png`} alt={makeName} width={120} height={120} className="w-full h-full object-contain opacity-80" />
             </div>
             <div>
               <h1 className="text-xl md:text-2xl font-extrabold text-[#1f2937] leading-tight">

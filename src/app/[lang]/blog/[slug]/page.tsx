@@ -3,6 +3,7 @@ import { getDictionary } from '@/dictionaries/getDictionary';
 import { notFound } from 'next/navigation';
 import { Calendar, User, Clock, ChevronRight, Home, Tag } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import type { Metadata } from 'next';
 
@@ -126,6 +127,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ lang:
   const canonical = `${SITE}/${lang}/blog/${slug}`;
   const ogImage = post.image?.startsWith('http') ? post.image : `${SITE}${post.image}`;
   const wordCount = post.content.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  const heroSrc = post.image!;
+  const heroRemoteUnoptimized =
+    typeof heroSrc === 'string' && /^https?:\/\//.test(heroSrc) && !heroSrc.includes('assets.cdn.filesafe.space');
 
   const blogPostingSchema = {
     '@context': 'https://schema.org',
@@ -202,7 +206,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ lang:
 
               {/* Hero image */}
               <div className="h-[300px] md:h-[420px] relative overflow-hidden">
-                <img src={post.image} alt={post.title} className="w-full h-full object-cover" width={900} height={420} />
+                <Image
+                  src={heroSrc}
+                  alt={post.title}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 68vw"
+                  className="object-cover"
+                  unoptimized={heroRemoteUnoptimized}
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-afd-navy/80 via-transparent to-transparent" />
                 {post.tags?.length > 0 && (
                   <div className="absolute bottom-6 left-6 flex gap-2 flex-wrap" aria-label="Article tags">
@@ -327,7 +339,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ lang:
                 {allPosts.map((p: any) => (
                   <Link key={p.slug} href={`/${lang}/blog/${p.slug}`} className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
                     <div className="aspect-[16/9] overflow-hidden relative bg-gray-100">
-                      {p.image && <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />}
+                      {p.image && (
+                        <Image
+                          src={p.image}
+                          alt={p.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          unoptimized={/^https?:\/\//.test(p.image) && !p.image.includes('assets.cdn.filesafe.space')}
+                        />
+                      )}
                     </div>
                     <div className="p-6 flex-1 flex flex-col">
                       <div className="flex items-center gap-2 text-[11px] font-bold text-afd-yellow uppercase tracking-wider mb-3">

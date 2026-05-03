@@ -4,7 +4,11 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { getDictionary } from '@/dictionaries/getDictionary';
 import Script from 'next/script';
-import { Analytics } from "@vercel/analytics/next";
+import ConsentAwareAnalytics from '@/components/ConsentAwareAnalytics';
+import CookieConsentBanner from '@/components/CookieConsentBanner';
+import DeferredLeadConnector from '@/components/DeferredLeadConnector';
+import { getConsentBootstrapInlineScript } from '@/lib/cookieConsent';
+import { openGraphLocaleForLang } from '@/lib/ogLocale';
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -35,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     },
     openGraph: {
       type: 'website',
-      locale: lang === 'en' ? 'en_GB' : lang,
+      locale: openGraphLocaleForLang(lang),
       url: `https://workshopdata.us/${lang}`,
       siteName: 'Auto Fix Data',
       title: m.defaultTitle,
@@ -73,53 +77,83 @@ export default async function RootLayout({
   const dir = lang === 'ar' || lang === 'he' ? 'rtl' : 'ltr';
   const dictionary = await getDictionary(lang as 'en' | 'fr' | 'es' | 'de' | 'it' | 'ar' | 'he');
 
+  const orgJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Auto Fix Data',
+    url: 'https://workshopdata.us',
+    logo: 'https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/678a6476a12015eea3a7c3b1.png',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      email: 'support@workshopdata.us',
+      availableLanguage: ['English', 'French', 'German', 'Spanish', 'Italian', 'Arabic', 'Hebrew'],
+    },
+    sameAs: [
+      'https://twitter.com/autofixdata',
+      'https://www.linkedin.com/company/autofixdata',
+      'https://www.facebook.com/autofixdata',
+    ],
+  };
+
+  const softwareJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Auto Fix Data',
+    operatingSystem: 'Web browser, iOS, Android',
+    applicationCategory: 'BusinessApplication',
+    url: 'https://workshopdata.us',
+    developer: { '@type': 'Organization', name: 'Auto Fix Data Team' },
+    image: 'https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/678a6476a12015eea3a7c3b1.png',
+    offers: { '@type': 'Offer', price: '99.00', priceCurrency: 'GBP' },
+  };
+
+  const webSiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Auto Fix Data',
+    url: 'https://workshopdata.us',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: 'https://workshopdata.us/en/search?q={search_term_string}',
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
+  const cookieConsent = dictionary.common.cookieConsent;
+
   return (
     <html lang={lang} dir={dir}>
       <head>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        {/* Google Tag Manager */}
-        <Script id="google-tag-manager" strategy="afterInteractive" dangerouslySetInnerHTML={{
-          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T6MPMMT7');`
-        }} />
-        {/* Global Organization JSON-LD */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "Auto Fix Data",
-            "url": "https://workshopdata.us",
-            "logo": "https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/678a6476a12015eea3a7c3b1.png",
-            "contactPoint": {
-              "@type": "ContactPoint",
-              "contactType": "customer service",
-              "email": "support@workshopdata.us",
-              "availableLanguage": ["English", "French", "German", "Spanish", "Italian"]
-            },
-            "sameAs": [
-              "https://twitter.com/autofixdata",
-              "https://www.linkedin.com/company/autofixdata",
-              "https://www.facebook.com/autofixdata"
-            ]
-          })
+          __html: JSON.stringify(orgJsonLd),
         }} />
-        {/* SoftwareApplication JSON-LD */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "Auto Fix Data",
-            "operatingSystem": "Web browser, iOS, Android",
-            "applicationCategory": "BusinessApplication",
-            "url": "https://workshopdata.us",
-            "developer": { "@type": "Organization", "name": "Auto Fix Data Team" },
-            "image": "https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/678a6476a12015eea3a7c3b1.png",
-            "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "342" },
-            "offers": { "@type": "Offer", "price": "99.00", "priceCurrency": "GBP" }
-          })
+          __html: JSON.stringify(softwareJsonLd),
+        }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{
+          __html: JSON.stringify(webSiteJsonLd),
         }} />
       </head>
       <body>
-        {/* GTM noscript */}
+        <script
+          id="afd-consent-bootstrap"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: getConsentBootstrapInlineScript(),
+          }}
+        />
+        <Script
+          id="google-tag-manager"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T6MPMMT7');`,
+          }}
+        />
         <noscript>
           <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T6MPMMT7" height="0" width="0" style={{ display: 'none', visibility: 'hidden' }} />
         </noscript>
@@ -130,15 +164,18 @@ export default async function RootLayout({
           <Footer dict={dictionary} lang={lang} />
         </div>
 
-        {/* LeadConnector Chat Widget */}
-        <Script
-          id="leadconnector-widget"
-          src="https://widgets.leadconnectorhq.com/loader.js"
-          strategy="lazyOnload"
-          data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
-          data-widget-id="696d618100a5f01fbad814c4"
+        <DeferredLeadConnector />
+        <ConsentAwareAnalytics />
+        <CookieConsentBanner
+          lang={lang}
+          labels={{
+            title: cookieConsent.title,
+            body: cookieConsent.body,
+            acceptAll: cookieConsent.acceptAll,
+            essentialOnly: cookieConsent.essentialOnly,
+            privacyLink: cookieConsent.privacyLink,
+          }}
         />
-        <Analytics />
       </body>
     </html>
   );

@@ -3,9 +3,18 @@
 import { useState, useEffect, useRef } from 'react';
 import { Search, ChevronRight, AlertCircle, FileText, Settings, X, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
-export default function GlobalSearch({ lang, placeholder }: { lang: string, placeholder: string }) {
+export default function GlobalSearch({
+  lang,
+  placeholder,
+  viewAllResultsLabel,
+}: {
+  lang: string;
+  placeholder: string;
+  viewAllResultsLabel: string;
+}) {
+  const router = useRouter();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -76,6 +85,13 @@ export default function GlobalSearch({ lang, placeholder }: { lang: string, plac
             setIsOpen(true);
           }}
           onFocus={() => { if (query.length >= 2) setIsOpen(true) }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && query.trim().length >= 2) {
+              e.preventDefault();
+              router.push(`/${lang}/search?q=${encodeURIComponent(query.trim())}`);
+              setIsOpen(false);
+            }
+          }}
         />
         {query && (
           <button 
@@ -115,6 +131,14 @@ export default function GlobalSearch({ lang, placeholder }: { lang: string, plac
                   <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-afd-blue transform group-hover:translate-x-1 transition-all" />
                 </Link>
               ))}
+              <div className="border-t border-gray-100 px-4 py-2 bg-gray-50/80">
+                <Link
+                  href={`/${lang}/search?q=${encodeURIComponent(query.trim())}`}
+                  className="text-xs font-bold text-afd-blue hover:text-afd-navy"
+                >
+                  {viewAllResultsLabel}
+                </Link>
+              </div>
             </div>
           ) : (
             <div className="p-6 text-center text-sm text-gray-500 font-medium">

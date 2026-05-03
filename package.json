@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "perf:audit": "node ./scripts/lighthouse-audit.mjs"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.8.2",

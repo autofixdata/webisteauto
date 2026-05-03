@@ -25,7 +25,8 @@
     "noCard": "Keine Kreditkarte",
     "noContract": "Kein Vertrag",
     "cancelAnytime": "Jederzeit kündbar",
-    "workshops": "10.000+ Werkstätten"
+    "workshops": "10.000+ Werkstätten",
+    "schemaTrust": "Strukturierte Daten entsprechen dem sichtbaren Seiteninhalt—keine generischen Drittanbieter-Bewertungen."
   },
   "common": {
     "startFreeTrial": "7 Tage kostenlos testen",
@@ -46,6 +47,22 @@
       "keywords": "Kfz-Reparaturdaten, OEM Handbücher, Schaltpläne, DTC Codes, TSBs, ALLDATA Alternative, Werkstattsoftware",
       "defaultTitle": "Auto Fix Data | Premium OEM-Reparaturdaten für Werkstätten",
       "defaultDesc": "Erhalten Sie sofortigen Zugang zu verifizierten OEM-Reparaturverfahren, farbigen Schaltplänen, Praxisreparaturen und TSBs für über 150 Mio. Fahrzeuge."
+    },
+    "cookieConsent": {
+      "title": "Cookies und Datenschutz",
+      "body": "Notwendige Cookies betreiben die Website. Analyse, Chat und Marketing werden erst nach «Alle akzeptieren» geladen.",
+      "acceptAll": "Alle akzeptieren",
+      "essentialOnly": "Nur notwendige",
+      "privacyLink": "Cookie- & DSGVO-Hinweise"
+    },
+    "searchPage": {
+      "title": "Suche",
+      "description": "Suchfunktion für Reparaturanleitungen und DTC-Fehlercodes.",
+      "resultsFor": "Ergebnisse für",
+      "noQuery": "Bitte mindestens 2 Zeichen in der Kopfzeilen-Suche eingeben.",
+      "noResults": "Keine Treffer.",
+      "ctaSearchBar": "Suche in der Navigation öffnen",
+      "viewAllResults": "Vollständige Suchseite öffnen"
     },
     "coverageHeading": "Abdeckung Aller Großen Marken",
     "coverageSub": "OEM-Daten für über 150 Fahrzeughersteller — 1990 bis heute"

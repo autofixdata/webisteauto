@@ -24,7 +24,7 @@ export default function Footer({ dict, lang }: { dict: any, lang: string }) {
       {/* Main Footer */}
       <footer className="bg-afd-navy pt-20 pb-10 border-t-4 border-afd-dark">
         <div className="max-w-[1200px] mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
+          <div className="mb-16 flex flex-col gap-10 md:grid md:grid-cols-4 md:gap-10">
             <div>
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-6 h-6 bg-afd-yellow rounded flex items-center justify-center">
@@ -87,6 +87,12 @@ export default function Footer({ dict, lang }: { dict: any, lang: string }) {
               </ul>
             </div>
           </div>
+
+          {dict.footer.schemaTrust && (
+            <p className="text-afd-slate/80 text-xs max-w-3xl mx-auto text-center mb-8 leading-relaxed border border-white/5 rounded-xl px-4 py-3 bg-white/[0.03]">
+              {dict.footer.schemaTrust}
+            </p>
+          )}
 
           <div className="pt-8 border-t border-afd-border flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-afd-slate text-sm">

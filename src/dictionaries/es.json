@@ -25,7 +25,8 @@
     "noCard": "Sin tarjeta de crédito",
     "noContract": "Sin contrato",
     "cancelAnytime": "Cancela cuando quieras",
-    "workshops": "Más de 10.000 talleres"
+    "workshops": "Más de 10.000 talleres",
+    "schemaTrust": "Los datos estructurados coinciden con lo que ves en cada página, no reseñas externas genéricas."
   },
   "common": {
     "startFreeTrial": "Prueba gratuita de 7 días",
@@ -46,6 +47,22 @@
       "keywords": "datos de reparación de automóviles, manuales OEM, diagramas de cableado, códigos DTC, TSB, alternativa a ALLDATA, software para talleres",
       "defaultTitle": "Auto Fix Data | Datos Premium de Reparación OEM para Talleres",
       "defaultDesc": "Obtenga acceso a procedimientos de reparación OEM, diagramas en color, soluciones reales y TSB para más de 150 millones de vehículos."
+    },
+    "cookieConsent": {
+      "title": "Cookies y privacidad",
+      "body": "Usamos cookies esenciales para el sitio. Analytics, chat y marketing solo se cargan si elige «Aceptar todo».",
+      "acceptAll": "Aceptar todo",
+      "essentialOnly": "Solo esenciales",
+      "privacyLink": "Política de cookies y RGPD"
+    },
+    "searchPage": {
+      "title": "Búsqueda",
+      "description": "Buscar manuales de reparación y códigos DTC.",
+      "resultsFor": "Resultados para",
+      "noQuery": "Escriba al menos 2 caracteres en la búsqueda del menú.",
+      "noResults": "Sin resultados.",
+      "ctaSearchBar": "Abrir búsqueda en el menú",
+      "viewAllResults": "Abrir página de búsqueda"
     },
     "coverageHeading": "Cobertura de Todas las Principales Marcas",
     "coverageSub": "Datos OEM para más de 150 fabricantes de vehículos — desde 1990 hasta el presente"

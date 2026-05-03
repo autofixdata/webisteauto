@@ -46,10 +46,13 @@ export async function GET(
 
   const xmlContent = targetEntries.map(({ path, lang }) => {
     const loc = fullEncodeUrl(`${BASE_URL}/${lang}${path}`);
-    const alternates = LOCALES.map(alternateLang => {
+    const alternateLines = LOCALES.map(alternateLang => {
       const altHref = fullEncodeUrl(`${BASE_URL}/${alternateLang}${path}`);
       return `    <xhtml:link rel="alternate" hreflang="${alternateLang}" href="${altHref}" />`;
-    }).join('\n');
+    });
+    const xDefaultHref = fullEncodeUrl(`${BASE_URL}/en${path}`);
+    alternateLines.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${xDefaultHref}" />`);
+    const alternates = alternateLines.join('\n');
 
     return `  <url>
     <loc>${loc}</loc>

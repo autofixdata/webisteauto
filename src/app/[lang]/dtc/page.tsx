@@ -37,7 +37,11 @@ export default async function DtcDirectoryPage({ params }: { params: Promise<{ l
             Browse our comprehensive database of OBD-II Diagnostic Trouble Codes (DTCs). Find symptoms, causes, and the specific OEM diagrams required to fix them.
           </p>
           <div className="flex justify-center relative z-20">
-            <GlobalSearch lang={lang} placeholder={dict.nav?.search || 'Search fault codes...'} />
+            <GlobalSearch
+              lang={lang}
+              placeholder={dict.nav?.search || 'Search fault codes...'}
+              viewAllResultsLabel={dict.common.searchPage.viewAllResults}
+            />
           </div>
         </div>
       </div>

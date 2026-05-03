@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, Wrench, Globe, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Menu, X, ChevronDown, Wrench } from 'lucide-react';
 
 
 const CAR_MAKES = [
@@ -70,6 +71,10 @@ export default function Navigation({ dict, lang }: { dict: any, lang: string }) 
                 <Link key={i} href={`/${lang}/manuals/${make.slug}`} className="flex items-center gap-1.5 cursor-pointer group whitespace-nowrap">
                   <img src={`/images/logos/${make.slug}.png`} alt={make.name}
                     className="h-4 w-auto object-contain opacity-50 group-hover:opacity-100 transition-opacity"
+                    loading="lazy"
+                    decoding="async"
+                    width={32}
+                    height={16}
                     onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                   />
                   <span className="text-[11px] text-afd-slate group-hover:text-afd-yellow transition-colors font-medium">{make.name}</span>
@@ -138,7 +143,7 @@ export default function Navigation({ dict, lang }: { dict: any, lang: string }) 
               onMouseEnter={() => setIsLangDropdownOpen(true)}
               onMouseLeave={() => setIsLangDropdownOpen(false)}>
               <button className="flex items-center gap-1.5 text-xs font-semibold text-afd-slate hover:text-afd-navy transition-colors uppercase tracking-wider">
-                <img src={`https://flagcdn.com/w20/${currentLang.flagCode}.png`} alt={currentLang.name} className="w-4 h-auto shadow-sm rounded-[1px]" aria-hidden="true" />
+                <Image src={`https://flagcdn.com/w20/${currentLang.flagCode}.png`} alt="" width={20} height={15} sizes="20px" className="w-5 h-auto shadow-sm rounded-[1px]" />
                 {currentLang.code}
                 <ChevronDown className="w-3 h-3 opacity-70" />
               </button>
@@ -151,7 +156,7 @@ export default function Navigation({ dict, lang }: { dict: any, lang: string }) 
                       href={getLangUrl(l.code)}
                       className={`flex items-center gap-3 px-4 py-2 text-sm font-medium transition-colors hover:bg-afd-light ${l.code === lang ? 'text-afd-blue bg-afd-light/50' : 'text-afd-text hover:text-afd-blue'}`}
                     >
-                      <img src={`https://flagcdn.com/w20/${l.flagCode}.png`} alt={l.name} className="w-4 h-auto shadow-sm rounded-[1px]" />
+                      <Image src={`https://flagcdn.com/w20/${l.flagCode}.png`} alt="" width={20} height={15} sizes="20px" className="w-5 h-auto shadow-sm rounded-[1px]" />
                       {l.name}
                     </Link>
                   ))}
@@ -218,7 +223,7 @@ export default function Navigation({ dict, lang }: { dict: any, lang: string }) 
                     href={getLangUrl(l.code)}
                     className={`flex items-center gap-2 px-3 py-2 rounded border ${l.code === lang ? 'border-afd-blue bg-afd-blue/5 text-afd-blue' : 'border-gray-200 bg-white text-afd-slate'}`}
                   >
-                    <img src={`https://flagcdn.com/w20/${l.flagCode}.png`} alt={l.name} className="w-4 h-auto shadow-sm" />
+                    <Image src={`https://flagcdn.com/w20/${l.flagCode}.png`} alt="" width={20} height={15} sizes="20px" className="w-4 h-auto shadow-sm" />
                     <span className="text-sm font-semibold uppercase">{l.code}</span>
                   </Link>
                 ))}

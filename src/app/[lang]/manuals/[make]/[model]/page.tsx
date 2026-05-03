@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from '@/components/LocalizedLink';
 import { unslugify, slugify, getModelsForMake, getYearsForModel } from '@/lib/carData';
 import { Lock, ChevronRight, Settings, Zap, BookOpen, Search, ArrowRight, CalendarDays, Key } from 'lucide-react';
@@ -81,7 +82,7 @@ export default async function ModelDetailPage({ params }: { params: Promise<{ la
           <div className="flex flex-col md:flex-row gap-6 justify-between items-start md:items-end mb-10">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <img src={`/images/logos/${make}.png`} alt={makeName} className="h-10 object-contain" />
+                <Image src={`/images/logos/${make}.png`} alt={makeName} width={160} height={40} className="h-10 object-contain" />
               </div>
               <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-2">{makeName} {modelName}</h1>
               <p className="text-xl text-gray-500">Select your production year to view specific OEM repair data.</p>

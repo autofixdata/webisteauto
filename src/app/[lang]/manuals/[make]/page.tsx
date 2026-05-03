@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Link from '@/components/LocalizedLink';
 import { POPULAR_MAKES, unslugify, getModelsForMake } from '@/lib/carData';
@@ -55,9 +56,7 @@ export default async function MakeDirectoryPage({ params }: { params: Promise<{ 
 
       <div className="bg-afd-navy py-16 px-6 relative overflow-hidden border-b border-white/5">
         <div className="max-w-[1000px] mx-auto text-center relative z-10">
-          <img src={`/images/logos/${make}.png`} alt={makeName}
-            className="h-12 w-auto object-contain filter brightness-0 invert mx-auto mb-6 opacity-80"
-          />
+          <Image src={`/images/logos/${make}.png`} alt={makeName} width={192} height={48} className="h-12 w-auto object-contain filter brightness-0 invert mx-auto mb-6 opacity-80" />
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4">{makeName} Repair Manuals</h1>
           <p className="text-xl text-afd-slate max-w-2xl mx-auto">
             Access OEM repair data, wiring diagrams, torque specs, and technical service bulletins for all {makeName} models.

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from '@/components/LocalizedLink';
 import { TrustBadges, FeatureTile, ProductCard, TestimonialCard } from '@/components/SharedSections';
 import { FAQItem } from '@/components/FAQItem';
@@ -29,10 +30,16 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
     <>
       {/* HERO SECTION */}
       <section className="relative bg-afd-navy pt-20 pb-32 overflow-hidden dark-section">
-        <div
-          className="absolute inset-0 z-0 opacity-40 bg-cover bg-center"
-          style={{ backgroundImage: `url(/images/hero-bg.png)` }}
-        />
+        <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden>
+          <Image
+            src="/images/hero-bg.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center opacity-40"
+          />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-b from-afd-navy/80 via-afd-navy/60 to-afd-navy z-0" />
         <div className="max-w-[1200px] mx-auto px-6 relative z-10">
           <div className="max-w-[800px]">
