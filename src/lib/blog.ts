@@ -80,3 +80,20 @@ export function getAllPostsMeta(lang: string): PostMeta[] {
     .map(slug => getPostMeta(lang, slug))
     .filter(Boolean) as PostMeta[];
 }
+
+/** Lang + slug pairs that render (locale MDX or English fallback) — for sitemap and static generation. */
+export function getResolvableBlogParams(): { lang: string; slug: string }[] {
+  const seen = new Set<string>();
+  const result: { lang: string; slug: string }[] = [];
+  for (const lang of LANGS) {
+    for (const slug of getAllSlugs(lang)) {
+      const key = `${lang}:${slug}`;
+      if (seen.has(key)) continue;
+      if (getPost(lang, slug)) {
+        seen.add(key);
+        result.push({ lang, slug });
+      }
+    }
+  }
+  return result;
+}

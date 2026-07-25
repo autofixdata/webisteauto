@@ -1,14 +1,20 @@
 import type { Metadata } from 'next';
+import { buildAlternates, openGraphForPath } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import { notFound } from 'next/navigation';
 import Link from '@/components/LocalizedLink';
 import { TOP_DTC_CODES, getDtcByCode } from '@/lib/dtcData';
-import { AlertTriangle, Settings, Zap, ShieldAlert, CheckCircle2, FileText, ChevronRight } from 'lucide-react';
+import { AlertTriangle, Settings, Zap, ShieldAlert, CheckCircle2, FileText } from 'lucide-react';
 import { getDictionary } from '@/dictionaries/getDictionary';
+import RelatedLinks from '@/components/RelatedLinks';
 
-export const dynamicParams = true; // Use ISR for the other 3,000+ codes
+export const dynamicParams = true;
+export const revalidate = 86400;
+
+const PREBUILD_DTC_COUNT = 300;
+
 export async function generateStaticParams() {
-  // Pre-build only top 50 codes to prevent Vercel build timeout on 21,000 pages
-  return TOP_DTC_CODES.slice(0, 50).map((dtc) => ({ code: dtc.code }));
+  return TOP_DTC_CODES.slice(0, PREBUILD_DTC_COUNT).map((dtc) => ({ code: dtc.code }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string, code: string }> }): Promise<Metadata> {
@@ -19,11 +25,13 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const title = dict.dtc.metaTitle.replace('{code}', code.toUpperCase()).replace('{title}', dtc?.description || "Diagnostic Trouble Code");
   const description = dict.dtc.metaDescription.replace('{code}', code.toUpperCase());
 
+  const dtcPath = `/dtc/${code.toUpperCase()}`;
+
   return {
     title,
     description,
-    alternates: { canonical: `https://workshopdata.us/${lang}/dtc/${code.toUpperCase()}` },
-    openGraph: { title, description }
+    alternates: buildAlternates(lang, dtcPath),
+    openGraph: openGraphForPath(lang, dtcPath, { title, description }),
   };
 }
 
@@ -60,9 +68,9 @@ export default async function DtcDetailPage({ params }: { params: Promise<{ lang
     breadcrumb: {
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: `https://workshopdata.us/${lang}` },
-        { '@type': 'ListItem', position: 2, name: 'DTC Codes', item: `https://workshopdata.us/${lang}/dtc` },
-        { '@type': 'ListItem', position: 3, name: dtc.code, item: `https://workshopdata.us/${lang}/dtc/${dtc.code}` },
+        { '@type': 'ListItem', position: 1, name: 'Home', item: pageUrl(lang, '') },
+        { '@type': 'ListItem', position: 2, name: 'DTC Codes', item: pageUrl(lang, `/dtc`) },
+        { '@type': 'ListItem', position: 3, name: dtc.code, item: pageUrl(lang, `/dtc/${dtc.code}`) },
       ],
     },
   });
@@ -153,18 +161,7 @@ export default async function DtcDetailPage({ params }: { params: Promise<{ lang
           </div>
         </div>
 
-        {/* Spider-Web Internal Links */}
-        <div className="max-w-[1200px] mx-auto mt-12">
-          <h3 className="text-xl font-bold text-afd-navy mb-6">{d.relatedCodes}</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {TOP_DTC_CODES.filter(c => c.code !== dtc.code).slice(0, 6).map(related => (
-              <Link key={related.code} href={`/${lang}/dtc/${related.code}`} className="bg-white border border-gray-200 rounded-xl p-4 text-center hover:border-afd-yellow hover:shadow-md transition-all group">
-                <div className="text-lg font-black text-afd-navy group-hover:text-afd-yellow transition-colors mb-1">{related.code}</div>
-                <div className="text-[10px] text-gray-500 line-clamp-2 leading-tight">{related.description}</div>
-              </Link>
-            ))}
-          </div>
-        </div>
+        <RelatedLinks lang={lang} dtcCode={dtc.code} className="max-w-[1200px] mx-auto mt-12" />
       </section>
     </>
   );

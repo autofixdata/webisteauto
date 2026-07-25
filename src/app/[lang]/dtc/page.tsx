@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
 import Link from '@/components/LocalizedLink';
 import { TOP_DTC_CODES } from "@/lib/dtcData";
 import { Search, AlertCircle, ChevronRight } from "lucide-react";
@@ -13,12 +14,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const dict = await getDictionary(lang as any) as any;
   const m = dict.dtc?.meta || {};
   return {
-    title: m.title || 'OBD-II Fault Codes (DTC) Directory & Symptoms | Auto Fix Data',
+    title: metadataTitle(m.title || 'OBD-II Fault Codes (DTC) Directory & Symptoms | Auto Fix Data'),
     description: m.description || 'Search our massive database of OBD2 engine fault codes.',
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/dtc`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/dtc`])),
-    }
+    alternates: await buildAlternates(lang, `/dtc`)
   };
 }
 

@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Image from 'next/image';
 import Link from '@/components/LocalizedLink';
 import { TrustBadges, FeatureTile, ProductCard, TestimonialCard } from '@/components/SharedSections';
 import { FAQItem } from '@/components/FAQItem';
+import BaySuccessStories from '@/components/BaySuccessStories';
 import { Wrench, ShieldAlert, Cpu, Activity, BookOpen, Clock } from 'lucide-react';
 import { getDictionary } from '@/dictionaries/getDictionary';
 
@@ -12,12 +15,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.home.meta.title,
+    title: metadataTitle(dict.home.meta.title),
     description: dict.home.meta.description,
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}`])),
-    },
+    alternates: await buildAlternates(lang, ``),
   };
 }
 
@@ -26,8 +26,72 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
   const dict = await getDictionary(lang as any);
   const d = dict.home;
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": d.faq.q1,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": d.faq.a1
+        }
+      },
+      {
+        "@type": "Question",
+        "name": d.faq.q2,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": d.faq.a2
+        }
+      },
+      {
+        "@type": "Question",
+        "name": d.faq.q3,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": d.faq.a3
+        }
+      },
+      {
+        "@type": "Question",
+        "name": d.faq.q4,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": d.faq.a4
+        }
+      },
+      {
+        "@type": "Question",
+        "name": d.faq.q5,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": d.faq.a5
+        }
+      }
+    ].filter(() => true)
+  };
+
+  const breadcrumbs = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": pageUrl(lang, '') }
+    ]
+  };
   return (
     <>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
+      />
       {/* HERO SECTION */}
       <section className="relative bg-afd-navy pt-20 pb-32 overflow-hidden dark-section">
         <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden>
@@ -193,6 +257,9 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
           </div>
         </div>
       </section>
+
+      {/* BAY SUCCESS STORIES */}
+      <BaySuccessStories data={dict.caseStudies} />
 
       {/* FAQ */}
       <section className="py-24 bg-white">

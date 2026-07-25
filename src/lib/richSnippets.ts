@@ -1,13 +1,14 @@
 /**
- * Shared JSON-LD rich snippet helpers for workshopdata.us
+ * Shared JSON-LD rich snippet helpers.
  * Used across product pages, feature pages, pricing, and SEO alternative pages.
  */
 
-export const SITE_URL = "https://workshopdata.us";
+import { SITE_URL } from './siteConfig';
+
+export { SITE_URL };
 
 /**
  * Standard Offer for the main subscription (£99–£199/mo)
- * Includes: price range, In Stock, 7-day return policy, free trial note
  */
 export const MAIN_OFFER = {
   "@type": "AggregateOffer",
@@ -17,7 +18,7 @@ export const MAIN_OFFER = {
   offerCount: "2",
   availability: "https://schema.org/InStock",
   priceValidUntil: "2026-12-31",
-  url: `${SITE_URL}/pricing`,
+  url: `${SITE_URL}/en/pricing`,
   hasMerchantReturnPolicy: {
     "@type": "MerchantReturnPolicy",
     applicableCountry: "GB",
@@ -38,7 +39,7 @@ export const FREE_TRIAL_OFFER = {
   price: "0",
   priceCurrency: "GBP",
   availability: "https://schema.org/InStock",
-  url: `${SITE_URL}/free-trial`,
+  url: `${SITE_URL}/en/free-trial`,
   description: "Start a free 7-day trial — no credit card required.",
 };
 

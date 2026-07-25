@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Image from 'next/image';
 import Link from '@/components/LocalizedLink';
 import { unslugify, slugify, getModelsForMake, getYearsForModel } from '@/lib/carData';
@@ -33,7 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return {
     title,
     description: `Complete list of ${makeName} ${modelName} repair manuals by year. Select your vehicle's exact year to view OEM wiring diagrams, specifications, and service procedures.`,
-    alternates: { canonical: `https://workshopdata.us/${lang}/manuals/${make}/${model}` },
+    alternates: await buildAlternates(lang, `/manuals/${make}/${model}`),
   };
 }
 
@@ -49,10 +51,10 @@ export default async function ModelDetailPage({ params }: { params: Promise<{ la
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `https://workshopdata.us/${lang}` },
-      { '@type': 'ListItem', position: 2, name: 'Repair Manuals', item: `https://workshopdata.us/${lang}/repair-manuals` },
-      { '@type': 'ListItem', position: 3, name: makeName, item: `https://workshopdata.us/${lang}/manuals/${make}` },
-      { '@type': 'ListItem', position: 4, name: modelName, item: `https://workshopdata.us/${lang}/manuals/${make}/${model}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: pageUrl(lang, '') },
+      { '@type': 'ListItem', position: 2, name: 'Repair Manuals', item: pageUrl(lang, `/repair-manuals`) },
+      { '@type': 'ListItem', position: 3, name: makeName, item: pageUrl(lang, `/manuals/${make}`) },
+      { '@type': 'ListItem', position: 4, name: modelName, item: pageUrl(lang, `/manuals/${make}/${model}`) },
     ],
   });
 

@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Link from '@/components/LocalizedLink';
 import { CheckCircle2, BookOpen, FileText, Zap, Settings, Camera, ArrowRight } from "lucide-react";
 import { getDictionary } from '@/dictionaries/getDictionary';
@@ -10,12 +12,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.haynesPro?.meta?.title ?? 'Haynes Pro Workshop Manuals via Auto Fix Data | Reseller',
+    title: metadataTitle(dict.haynesPro?.meta?.title ?? 'Haynes Pro Workshop Manuals via Auto Fix Data | Reseller'),
     description: dict.haynesPro?.meta?.description ?? "Access Haynes Pro's professional workshop manuals and repair data through Auto Fix Data. OEM-level procedures for 150M+ vehicles. Start your free trial.",
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/haynes-pro`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/haynes-pro`])),
-    },
+    alternates: await buildAlternates(lang, `/haynes-pro`),
   };
 }
 
@@ -33,24 +32,19 @@ export default async function HaynesProProductPage({ params }: { params: Promise
     "name": `${d?.hero?.heading || "Haynes Pro Workshop Manuals"} — via Auto Fix Data`,
     "image": "https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/670c1a958a10046187933a85.png",
     "description": d?.meta?.description || "Access Haynes Pro's professional workshop manuals.",
-    "url": `https://workshopdata.us/${lang}/haynes-pro`,
+    "url": pageUrl(lang, `/haynes-pro`),
     "brand": {
       "@type": "Brand",
       "name": "Haynes Pro"
     },
     "sku": "AFD-HAYNES",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.7",
-      "reviewCount": "890"
-    },
     "offers": {
       "@type": "Offer",
       "name": dict.common?.freeTrial || "Free 7-Day Trial",
       "price": "0.00",
       "priceCurrency": "GBP",
       "availability": "https://schema.org/InStock",
-      "url": `https://workshopdata.us/${lang}/free-trial`
+      "url": pageUrl(lang, `/free-trial`)
     }
   });
 
@@ -147,6 +141,31 @@ export default async function HaynesProProductPage({ params }: { params: Promise
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-afd-light border-t border-gray-100">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-afd-navy mb-8 text-center">
+            {d?.latestGuidesHeading ?? 'Latest HaynesPro & AI Guides'}
+          </h2>
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            <li>
+              <Link href="/blog/haynespro-ai-features-2026" className="block p-5 bg-white rounded-xl border border-gray-100 hover:border-afd-yellow hover:shadow-md transition-all text-afd-navy font-semibold text-sm">
+                HaynesPro AI Features 2026 →
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog/haynespro-ai-wiring-diagram-search" className="block p-5 bg-white rounded-xl border border-gray-100 hover:border-afd-yellow hover:shadow-md transition-all text-afd-navy font-semibold text-sm">
+                AI Wiring Search Guide →
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog/haynespro-pricing-ai-premium-2026" className="block p-5 bg-white rounded-xl border border-gray-100 hover:border-afd-yellow hover:shadow-md transition-all text-afd-navy font-semibold text-sm">
+                HaynesPro Pricing & AI 2026 →
+              </Link>
+            </li>
+          </ul>
         </div>
       </section>
 

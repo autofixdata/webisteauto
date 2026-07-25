@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
 import { AlternativePageTemplate } from "@/components/AlternativePage";
 
 const LANGS = ['en', 'fr', 'es', 'de', 'it', 'ar', 'he'];
@@ -10,12 +11,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const cName = "Mitchell1 ProDemand";
 
   return {
-    title: tpl.metaTitle ? tpl.metaTitle.replace(/\{C\}/g, cName) : `Best ${cName} Alternative | Auto Fix Data`,
+    title: metadataTitle(tpl.metaTitle ? tpl.metaTitle.replace(/\{C\}/g, cName) : `Best ${cName} Alternative | Auto Fix Data`),
     description: tpl.metaDesc ? tpl.metaDesc.replace(/\{C\}/g, cName) : `Searching for a better ${cName} alternative? Stop overpaying.`,
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/mitchell1-alternative`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/mitchell1-alternative`])),
-    },
+    alternates: await buildAlternates(lang, `/mitchell1-alternative`),
   };
 }
 

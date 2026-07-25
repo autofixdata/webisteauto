@@ -372,7 +372,29 @@
         "title": "Print-to-Bay Export",
         "desc": "Export any schematic as a clean PDF to take to the vehicle bay without needing a second device."
       }
-    }
+    },
+    "faq": [
+      {
+        "q": "Are the wiring diagrams full-colour?",
+        "a": "Yes. All wiring diagrams from Haynes Pro and Mitchell1 are delivered in full colour, with each wire colour matching its physical colour to make tracing circuits intuitive and fast."
+      },
+      {
+        "q": "Can I see component physical locations?",
+        "a": "Yes. Component locator diagrams show the exact physical location on the vehicle with reference photographs, so you know exactly where to access the connector."
+      },
+      {
+        "q": "What vehicles are covered for wiring diagrams?",
+        "a": "We provide wiring diagrams for the vast majority of European and global vehicles from 1990 to present, covering 150+ major manufacturers."
+      },
+      {
+        "q": "Do you have EV and hybrid wiring data?",
+        "a": "Yes. High-voltage circuit diagrams for BEV and hybrid systems are included, complete with clear safety warnings and isolation procedures."
+      },
+      {
+        "q": "Can I view ECU connector pinouts?",
+        "a": "Yes. Hover over any ECU connector in the diagram to see expected voltage, signal type, and ground values for every pin."
+      }
+    ]
   },
   "diagnostics": {
     "meta": {
@@ -1404,5 +1426,44 @@
         "desc": "Real-world confirmed fixes from a network of 70,000+ professional technicians. Direct-Hit™ included."
       }
     }
+  },
+  "caseStudies": {
+    "title": "Bay Success Stories",
+    "subtitle": "See how professional workshops diagnose faults up to 90% faster using our unedited OEM database.",
+    "cases": [
+      {
+        "title": "The Ghost CAN Bus Failure",
+        "garage": "Apex Diagnostics",
+        "location": "London, UK",
+        "vehicle": "2019 BMW 320d (F30)",
+        "dtc": "U0100",
+        "dbUsed": "Mitchell1 Topology",
+        "estTime": "3 Hours",
+        "actTime": "12 Mins",
+        "summary": "Customer experienced intermittent transmission lock-up. Traced a pinched CAN-bus line behind the front passenger footwell fuse box using our ECU network topology diagrams."
+      },
+      {
+        "title": "The Mysterious EVAP Leak",
+        "garage": "Garage de la Gare",
+        "location": "Lyon, France",
+        "vehicle": "2018 Ford Transit 2.0 EcoBlue",
+        "dtc": "P0456",
+        "dbUsed": "ALLDATA TSB",
+        "estTime": "4 Hours",
+        "actTime": "15 Mins",
+        "summary": "Engine light on with micro-leak code. Identified a known manufacturer issue matching a TSB that detailed a hairline crack in the carbon canister housing."
+      },
+      {
+        "title": "The Hybrid HV Isolation Mismatch",
+        "garage": "AutoTuning Garage",
+        "location": "Munich, Germany",
+        "vehicle": "2021 Toyota Prius Hybrid",
+        "dtc": "P0AA6",
+        "dbUsed": "Haynes Pro VESA",
+        "estTime": "2 Days",
+        "actTime": "20 Mins",
+        "summary": "Safely followed step-by-step high-voltage service disconnect and isolation resistance testing to trace leakage to a corroded air conditioning compressor motor."
+      }
+    ]
   }
 }

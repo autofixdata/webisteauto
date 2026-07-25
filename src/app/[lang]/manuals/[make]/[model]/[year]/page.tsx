@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, openGraphForPath } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Image from 'next/image';
 import Link from '@/components/LocalizedLink';
 import { getDictionary } from '@/dictionaries/getDictionary';
@@ -27,11 +29,15 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     ? dict.manuals.yearTemplateDesc.replace('{Y}', year).replace('{Ma}', makeName).replace('{Mo}', modelName)
     : `Access complete OEM repair data, service manuals, and interactive wiring diagrams for the ${year} ${makeName} ${modelName}.`;
 
+  const manualPath = `/manuals/${make}/${model}/${year}`;
+  const isOldYear = Number(year) < 2010;
+
   return {
     title,
     description,
-    alternates: { canonical: `https://workshopdata.us/${lang}/manuals/${make}/${model}/${year}` },
-    openGraph: { title, description },
+    alternates: await buildAlternates(lang, manualPath),
+    openGraph: openGraphForPath(lang, manualPath, { title, description }),
+    robots: isOldYear ? { index: false, follow: true } : { index: true, follow: true },
   };
 }
 
@@ -56,7 +62,7 @@ export default async function YearDetailPage({ params }: { params: Promise<{ lan
     "name": `${title} Repair Manual Data`,
     "description": `OEM diagnostic and repair database for ${title}.`,
     "image": "https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/670c1a958a10046187933a85.png",
-    "url": `https://workshopdata.us/${lang}/manuals/${make}/${model}/${year}`,
+    "url": pageUrl(lang, `/manuals/${make}/${model}/${year}`),
     "brand": { "@type": "Brand", "name": makeName },
     "sku": `AFD-${make}-${model}-${year}`,
     "offers": {
@@ -65,7 +71,7 @@ export default async function YearDetailPage({ params }: { params: Promise<{ lan
       "price": "99.00",
       "priceCurrency": "GBP",
       "availability": "https://schema.org/InStock",
-      "url": `https://workshopdata.us/${lang}/pricing`
+      "url": pageUrl(lang, `/pricing`)
     }
   });
 
@@ -73,11 +79,11 @@ export default async function YearDetailPage({ params }: { params: Promise<{ lan
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `https://workshopdata.us/${lang}` },
-      { '@type': 'ListItem', position: 2, name: 'Repair Manuals', item: `https://workshopdata.us/${lang}/repair-manuals` },
-      { '@type': 'ListItem', position: 3, name: makeName, item: `https://workshopdata.us/${lang}/manuals/${make}` },
-      { '@type': 'ListItem', position: 4, name: modelName, item: `https://workshopdata.us/${lang}/manuals/${make}/${model}` },
-      { '@type': 'ListItem', position: 5, name: year, item: `https://workshopdata.us/${lang}/manuals/${make}/${model}/${year}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: pageUrl(lang, '') },
+      { '@type': 'ListItem', position: 2, name: 'Repair Manuals', item: pageUrl(lang, `/repair-manuals`) },
+      { '@type': 'ListItem', position: 3, name: makeName, item: pageUrl(lang, `/manuals/${make}`) },
+      { '@type': 'ListItem', position: 4, name: modelName, item: pageUrl(lang, `/manuals/${make}/${model}`) },
+      { '@type': 'ListItem', position: 5, name: year, item: pageUrl(lang, `/manuals/${make}/${model}/${year}`) },
     ],
   });
 
@@ -87,17 +93,25 @@ export default async function YearDetailPage({ params }: { params: Promise<{ lan
   const sortedYears = [...availableYears].sort((a, b) => Number(a) - Number(b));
   const currentIndex = sortedYears.findIndex(y => String(y) === String(year));
 
+  const isOldYear = Number(year) < 2010;
+
   const relatedLinks = [];
+  // For years older than 2010, we do not link to even older/newer years to prevent crawling traps.
   if (currentIndex > 0) {
     const prev = sortedYears[currentIndex - 1];
-    relatedLinks.push({ label: `${prev} ${makeName} ${modelName}`, url: `/${lang}/manuals/${make}/${model}/${prev}` });
+    if (!isOldYear || Number(prev) >= 2010) {
+      relatedLinks.push({ label: `${prev} ${makeName} ${modelName}`, url: `/${lang}/manuals/${make}/${model}/${prev}` });
+    }
   }
   if (currentIndex < sortedYears.length - 1) {
     const next = sortedYears[currentIndex + 1];
-    relatedLinks.push({ label: `${next} ${makeName} ${modelName}`, url: `/${lang}/manuals/${make}/${model}/${next}` });
+    if (!isOldYear || Number(next) >= 2010) {
+      relatedLinks.push({ label: `${next} ${makeName} ${modelName}`, url: `/${lang}/manuals/${make}/${model}/${next}` });
+    }
   }
 
-  const otherModels = Object.keys(db[make] || {}).filter(m => m !== model).slice(0, 4);
+  // Limit other models' links on old pages or keep it to top 2 to reduce link density
+  const otherModels = Object.keys(db[make] || {}).filter(m => m !== model).slice(0, isOldYear ? 2 : 4);
   otherModels.forEach(otherModel => {
     const otherYears = db[make][otherModel];
     if (otherYears && otherYears.length > 0) {

@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Link from '@/components/LocalizedLink';
 import { CheckCircle2, Database, FileText, Zap, Settings, Calendar, ArrowRight } from "lucide-react";
 import { getDictionary } from '@/dictionaries/getDictionary';
@@ -10,12 +12,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.autodata?.meta?.title ?? 'AutoData Workshop Database via Auto Fix Data | Authorised Reseller',
+    title: metadataTitle(dict.autodata?.meta?.title ?? 'AutoData Workshop Database via Auto Fix Data | Authorised Reseller'),
     description: dict.autodata?.meta?.description ?? "Access AutoData's technical specifications, service intervals, wiring diagrams and DTC codes through Auto Fix Data. Trusted by European workshops. Free trial available.",
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/autodata`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/autodata`])),
-    },
+    alternates: await buildAlternates(lang, `/autodata`),
   };
 }
 
@@ -33,24 +32,19 @@ export default async function AutodataProductPage({ params }: { params: Promise<
     "name": `${d?.hero?.heading || "AutoData Workshop Database"} — via Auto Fix Data`,
     "image": "https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/670c1a958a10046187933a85.png",
     "description": d?.meta?.description || "Access AutoData's technical specifications.",
-    "url": `https://workshopdata.us/${lang}/autodata`,
+    "url": pageUrl(lang, `/autodata`),
     "brand": {
       "@type": "Brand",
       "name": "AutoData"
     },
     "sku": "AFD-AUTODATA",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "1250"
-    },
     "offers": {
       "@type": "Offer",
       "name": dict.common?.freeTrial || "Free 7-Day Trial",
       "price": "0.00",
       "priceCurrency": "GBP",
       "availability": "https://schema.org/InStock",
-      "url": `https://workshopdata.us/${lang}/free-trial`
+      "url": pageUrl(lang, `/free-trial`)
     }
   });
 
@@ -149,6 +143,31 @@ export default async function AutodataProductPage({ params }: { params: Promise<
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-afd-light border-t border-gray-100">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-afd-navy mb-8 text-center">
+            {d?.latestGuidesHeading ?? 'Latest AutoData & AI Guides'}
+          </h2>
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            <li>
+              <Link href="/blog/autodata-ai-diagnostic-tools-2026" className="block p-5 bg-white rounded-xl border border-gray-100 hover:border-afd-yellow hover:shadow-md transition-all text-afd-navy font-semibold text-sm">
+                AutoData AI Diagnostic Tools →
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog/autodata-ai-labour-times-pricing-2026" className="block p-5 bg-white rounded-xl border border-gray-100 hover:border-afd-yellow hover:shadow-md transition-all text-afd-navy font-semibold text-sm">
+                AI Labour Times & Pricing →
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog/autodata-ev-ai-service-data" className="block p-5 bg-white rounded-xl border border-gray-100 hover:border-afd-yellow hover:shadow-md transition-all text-afd-navy font-semibold text-sm">
+                EV & AI Service Data →
+              </Link>
+            </li>
+          </ul>
         </div>
       </section>
 

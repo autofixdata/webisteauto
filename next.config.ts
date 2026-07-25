@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  cacheHandler: require.resolve('./cache-handler.js'),
+  cacheMaxMemorySize: 0, // Disable default in-memory cache
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "flagcdn.com", pathname: "/w20/**" },

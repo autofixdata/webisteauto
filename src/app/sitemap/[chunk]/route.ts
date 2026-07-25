@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllSitemapPaths, CHUNK_SIZE, BASE_URL, LOCALES } from '@/lib/sitemap';
+import { getAllSitemapEntries, CHUNK_SIZE, BASE_URL, LOCALES } from '@/lib/sitemap';
 
 function escapeXml(unsafe: string) {
   return unsafe.replace(/[<>&'"]/g, (c) => {
@@ -26,15 +26,7 @@ export async function GET(
   const chunkId = parseInt(chunkSlug.replace('.xml', ''), 10);
   const now = new Date().toISOString();
 
-  const allLogicalPaths = getAllSitemapPaths();
-
-  // Flatten combinations of paths and locales
-  const allEntries: { path: string, lang: string }[] = [];
-  allLogicalPaths.forEach(path => {
-    LOCALES.forEach(lang => {
-      allEntries.push({ path, lang });
-    });
-  });
+  const allEntries = getAllSitemapEntries();
 
   const start = chunkId * CHUNK_SIZE;
   const end = start + CHUNK_SIZE;
@@ -46,7 +38,7 @@ export async function GET(
 
   const xmlContent = targetEntries.map(({ path, lang }) => {
     const loc = fullEncodeUrl(`${BASE_URL}/${lang}${path}`);
-    const alternateLines = LOCALES.map(alternateLang => {
+    const alternateLines = LOCALES.map((alternateLang) => {
       const altHref = fullEncodeUrl(`${BASE_URL}/${alternateLang}${path}`);
       return `    <xhtml:link rel="alternate" hreflang="${alternateLang}" href="${altHref}" />`;
     });

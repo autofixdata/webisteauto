@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Script from 'next/script';
 import { CheckCircle2, Shield } from "lucide-react";
 import { getDictionary } from '@/dictionaries/getDictionary';
@@ -9,12 +11,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.freeTrial.meta.title,
+    title: metadataTitle(dict.freeTrial.meta.title),
     description: dict.freeTrial.meta.description,
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/free-trial`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/free-trial`])),
-    },
+    alternates: await buildAlternates(lang, `/free-trial`),
   };
 }
 
@@ -29,24 +28,19 @@ export default async function FreeTrialPage({ params }: { params: Promise<{ lang
     "name": `${d.hero.heading} — Auto Fix Data`,
     "image": "https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/670c1a958a10046187933a85.png",
     "description": d.meta.description,
-    "url": `https://workshopdata.us/${lang}/free-trial`,
+    "url": pageUrl(lang, `/free-trial`),
     "brand": {
       "@type": "Brand",
       "name": "Auto Fix Data"
     },
     "sku": "AFD-TRIAL",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "2100"
-    },
     "offers": {
       "@type": "Offer",
       "name": dict.common?.freeTrial || "Free 7-Day Trial",
       "price": "0.00",
       "priceCurrency": "GBP",
       "availability": "https://schema.org/InStock",
-      "url": `https://workshopdata.us/${lang}/free-trial`
+      "url": pageUrl(lang, `/free-trial`)
     }
   });
 

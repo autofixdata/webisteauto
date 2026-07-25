@@ -372,7 +372,29 @@
         "title": "Exportation pour l'atelier",
         "desc": "Exportez tout schéma en PDF propre pour l'utiliser directement au pied du véhicule."
       }
-    }
+    },
+    "faq": [
+      {
+        "q": "Les schémas électriques sont-ils en couleur ?",
+        "a": "Oui. Tous les schémas électriques de Haynes Pro et Mitchell1 sont fournis en couleur, chaque couleur de fil correspondant à sa couleur physique pour rendre le suivi des circuits intuitif."
+      },
+      {
+        "q": "Puis-je voir l'emplacement physique des composants ?",
+        "a": "Oui. Les diagrammes de localisation des composants indiquent l'emplacement physique exact sur le véhicule avec des photos de référence pour faciliter l'accès."
+      },
+      {
+        "q": "Quels véhicules sont couverts pour les schémas électriques ?",
+        "a": "Nous fournissons des schémas électriques pour la grande majorité des véhicules européens et mondiaux de 1990 à aujourd'hui, couvrant plus de 150 constructeurs."
+      },
+      {
+        "q": "Avez-vous les schémas des véhicules électriques et hybrides ?",
+        "a": "Oui. Les schémas de circuits haute tension pour les systèmes BEV et hybrides sont inclus, avec des avertissements de sécurité clairs."
+      },
+      {
+        "q": "Puis-je consulter le brochage des connecteurs de l'ECU ?",
+        "a": "Oui. Survolez n'importe quel connecteur d'ECU pour voir la tension attendue, le type de signal et les valeurs de masse."
+      }
+    ]
   },
   "diagnostics": {
     "meta": {
@@ -1358,5 +1380,44 @@
         "desc": "Des correctifs confirmés dans le monde réel par un réseau de plus de 70 000 techniciens professionnels. Direct-Hit™ inclus."
       }
     }
+  },
+  "caseStudies": {
+    "title": "Histoires de Réussite en Atelier",
+    "subtitle": "Découvrez comment les ateliers professionnels diagnostiquent les pannes jusqu'à 90% plus rapidement.",
+    "cases": [
+      {
+        "title": "La panne fantôme du bus CAN",
+        "garage": "Apex Diagnostics",
+        "location": "Londres, UK",
+        "vehicle": "2019 BMW 320d (F30)",
+        "dtc": "U0100",
+        "dbUsed": "Topologie Mitchell1",
+        "estTime": "3 Heures",
+        "actTime": "12 Min",
+        "summary": "Le client a subi un blocage intermittent de la transmission. Repérage d'un fil de bus CAN pincé derrière la boîte à fusibles passager grâce aux diagrammes de réseau."
+      },
+      {
+        "title": "La fuite mystérieuse d'EVAP",
+        "garage": "Garage de la Gare",
+        "location": "Lyon, France",
+        "vehicle": "2018 Ford Transit 2.0 EcoBlue",
+        "dtc": "P0456",
+        "dbUsed": "TSB ALLDATA",
+        "estTime": "4 Heures",
+        "actTime": "15 Min",
+        "summary": "Témoin moteur allumé. Identification d'un problème constructeur connu correspondant à un TSB détaillant une fissure invisible sur la cartouche de carbone."
+      },
+      {
+        "title": "Défaut d'isolement hybride haute tension",
+        "garage": "AutoTuning Garage",
+        "location": "Munich, Allemagne",
+        "vehicle": "2021 Toyota Prius Hybrid",
+        "dtc": "P0AA6",
+        "dbUsed": "VESA Haynes Pro",
+        "estTime": "2 Jours",
+        "actTime": "20 Min",
+        "summary": "Suivi sécurisé des étapes de déconnexion haute tension pour localiser une fuite d'isolement sur le moteur du compresseur de climatisation corrodé."
+      }
+    ]
   }
 }

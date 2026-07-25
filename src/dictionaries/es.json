@@ -372,7 +372,29 @@
         "title": "Exportar para el taller",
         "desc": "Exporte cualquier esquema a PDF limpio para llevarlo al elevador sin necesidad de tablet."
       }
-    }
+    },
+    "faq": [
+      {
+        "q": "¿Los diagramas de cableado son a todo color?",
+        "a": "Sí. Todos los diagramas de cableado de Haynes Pro y Mitchell1 se entregan a todo color, y cada color de cable coincide con su color físico para un seguimiento rápido."
+      },
+      {
+        "q": "¿Puedo ver la ubicación física de los componentes?",
+        "a": "Sí. Los diagramas de localización muestran la ubicación física exacta en el vehículo con fotografías de referencia."
+      },
+      {
+        "q": "¿Qué vehículos están cubiertos en los diagramas de cableado?",
+        "a": "Ofrecemos diagramas para la gran mayoría de los vehículos europeos y globales desde 1990 hasta el presente, cubriendo más de 150 marcas."
+      },
+      {
+        "q": "¿Tienen datos de cableado para vehículos eléctricos e híbridos?",
+        "a": "Sí. Se incluyen diagramas de circuitos de alto voltaje para sistemas híbridos y BEV, con advertencias de seguridad y procedimientos de aislamiento."
+      },
+      {
+        "q": "¿Puedo ver los pinouts de los conectores de la ECU?",
+        "a": "Sí. Pase el cursor sobre cualquier conector de la ECU para ver el voltaje esperado, el tipo de señal y los valores de tierra."
+      }
+    ]
   },
   "diagnostics": {
     "meta": {
@@ -1343,5 +1365,44 @@
         "desc": "Reparaciones confirmadas en el mundo real por una red de más de 70,000 técnicos profesionales. Direct-Hit™ incluido."
       }
     }
+  },
+  "caseStudies": {
+    "title": "Casos de Éxito en el Taller",
+    "subtitle": "Vea cómo los talleres profesionales diagnostican averías hasta un 90% más rápido con nuestra base de datos.",
+    "cases": [
+      {
+        "title": "La falla fantasma del bus CAN",
+        "garage": "Apex Diagnostics",
+        "location": "Londres, Reino Unido",
+        "vehicle": "2019 BMW 320d (F30)",
+        "dtc": "U0100",
+        "dbUsed": "Topología Mitchell1",
+        "estTime": "3 Horas",
+        "actTime": "12 Min",
+        "summary": "El cliente experimentó un bloqueo intermitente de la transmisión. Localización de una línea de bus CAN pellizcada detrás de la caja de fusibles mediante los diagramas de topología."
+      },
+      {
+        "title": "La misteriosa fuga de EVAP",
+        "garage": "Garage de la Gare",
+        "location": "Lyon, Francia",
+        "vehicle": "2018 Ford Transit 2.0 EcoBlue",
+        "dtc": "P0456",
+        "dbUsed": "TSB de ALLDATA",
+        "estTime": "4 Horas",
+        "actTime": "15 Min",
+        "summary": "Luz de motor encendida con código de microfuga. Se identificó un problema conocido del fabricante coincidente con un TSB sobre una grieta en el cartucho de carbón."
+      },
+      {
+        "title": "Fallo de aislamiento de alta tensión en híbrido",
+        "garage": "AutoTuning Garage",
+        "location": "Múnich, Alemania",
+        "vehicle": "2021 Toyota Prius Hybrid",
+        "dtc": "P0AA6",
+        "dbUsed": "Haynes Pro VESA",
+        "estTime": "2 Días",
+        "actTime": "20 Min",
+        "summary": "Se siguieron de forma segura los procedimientos de desconexión y prueba de resistencia para rastrear la fuga en el motor del compresor de aire acondicionado."
+      }
+    ]
   }
 }

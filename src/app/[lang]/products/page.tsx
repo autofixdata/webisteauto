@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
 import Link from '@/components/LocalizedLink';
 import { ProductCard } from '@/components/SharedSections';
 import { CheckCircle2 } from 'lucide-react';
@@ -10,12 +11,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.products.meta.title,
+    title: metadataTitle(dict.products.meta.title),
     description: dict.products.meta.description,
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/products`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/products`])),
-    },
+    alternates: await buildAlternates(lang, `/products`),
   };
 }
 

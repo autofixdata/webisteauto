@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Link from '@/components/LocalizedLink';
 import { ShieldAlert, Activity, Search, Database, Zap, BookOpen, CheckCircle2 } from "lucide-react";
 import { FAQItem } from "@/components/FAQItem";
@@ -13,43 +15,13 @@ const codeTypes = [
   { code: "U-Codes", range: "U0000–U3999", name: "Network/CAN Bus", desc: "Controller Area Network faults, module communication failures and gateway errors.", color: "bg-purple-500/20 text-purple-400 border-purple-500/30" },
 ];
 
-const faqs = [
-  { q: "What DTC codes are covered?", a: "Auto Fix Data covers all OBD2 P-codes (P0000–P3999), B-codes (Body), C-codes (Chassis), U-codes (Network), and thousands of manufacturer-specific codes from all major OEMs." },
-  { q: "Do you provide real-world fix data alongside DTC codes?", a: "Yes. Through our Identifix Direct-Hit integration, each DTC is cross-referenced with real-world confirmed repairs submitted by professional technicians, showing you the most common verified fix before you start testing." },
-  { q: "How current is the DTC database?", a: "The database is updated daily from ALLDATA, AutoData, Haynes Pro, Mitchell1 and Identifix. New manufacturer-specific codes are added as they are issued by OEMs." },
-  { q: "Can I look up freeze frame data?", a: "Yes. Where the OEM provides freeze frame parameters for a specific code, we display the expected sensor values at the time the code was set — critical for intermittent fault diagnosis." },
-  { q: "Is the diagnostic flowchart data OEM-sourced?", a: "Yes. All diagnostic flowcharts are sourced directly from ALLDATA and Haynes Pro OEM data feeds. You see the exact decision trees that dealer technicians use." },
-];
-
-const productSchema = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "DTC Code Library & Diagnostic Data — Auto Fix Data",
-  "description": "Access the complete OBD2 and OEM-specific DTC library — P, B, C and U codes with diagnostic flowcharts, freeze frame data and real-world confirmed fixes.",
-  "url": "https://workshopdata.us/diagnostics",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" }
-});
-
-const faqSchema = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": faqs.map(f => ({
-    "@type": "Question",
-    "name": f.q,
-    "acceptedAnswer": { "@type": "Answer", "text": f.a }
-  }))
-});
-
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.diagnostics.meta.title,
+    title: metadataTitle(dict.diagnostics.meta.title),
     description: dict.diagnostics.meta.description,
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/diagnostics`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/diagnostics`])),
-    },
+    alternates: await buildAlternates(lang, `/diagnostics`),
   };
 }
 
@@ -58,10 +30,37 @@ export default async function DiagnosticsPage({ params }: { params: Promise<{ la
   const dict = await getDictionary(lang as any);
   const d = dict.diagnostics as any;
 
+  const faqs = [
+    { q: d.faq.q1, a: d.faq.a1 },
+    { q: d.faq.q2, a: d.faq.a2 },
+    { q: d.faq.q3, a: d.faq.a3 },
+    { q: d.faq.q4, a: d.faq.a4 },
+    { q: d.faq.q5, a: d.faq.a5 },
+  ].filter(f => f.q && f.a);
+
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": `${d.hero.heading1} ${d.hero.heading2} — Auto Fix Data`,
+    "description": d.meta.description || "Access the complete OBD2 and OEM-specific DTC library.",
+    "url": pageUrl(lang, `/diagnostics`),
+    "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": lang === 'en' ? "GBP" : "EUR" }
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a }
+    }))
+  };
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: productSchema }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       {/* HERO */}
       <section className="bg-afd-dark py-24 px-6 border-b border-afd-border relative overflow-hidden">

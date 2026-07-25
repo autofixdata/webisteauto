@@ -85,6 +85,20 @@ export default function PricingContent({ dict, lang }: { dict: any, lang: string
     faqHeading: "Pricing FAQs"
   };
 
+  const pricingFaqs = [1, 2, 3, 4]
+    .map(i => ({ q: (dict.pricing?.faq as any)?.[`q${i}`], a: (dict.pricing?.faq as any)?.[`a${i}`] }))
+    .filter(f => f.q && f.a);
+
+  const faqSchema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": pricingFaqs.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a }
+    }))
+  });
+
   const compRows = [
     { feature: pData.table.rows[0], alldata: CHECK, autodata: CHECK, haynes: CHECK, mitchell: CHECK, identifix: PARTIAL },
     { feature: pData.table.rows[1], alldata: CHECK, autodata: CHECK, haynes: CHECK, mitchell: CHECK, identifix: NONE },
@@ -108,6 +122,7 @@ export default function PricingContent({ dict, lang }: { dict: any, lang: string
 
   return (
     <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: faqSchema }} />
       <section className="bg-afd-navy pt-20 pb-32 px-6 text-center dark-section relative">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-afd-dark z-0"></div>
         <div className="relative z-10">

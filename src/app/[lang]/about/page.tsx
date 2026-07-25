@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
 import { getDictionary } from '@/dictionaries/getDictionary';
 
 const LANGS = ['en', 'fr', 'es', 'de', 'it', 'ar', 'he'];
@@ -7,12 +8,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.about.meta.title,
+    title: metadataTitle(dict.about.meta.title),
     description: dict.about.meta.description,
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/about`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/about`])),
-    },
+    alternates: await buildAlternates(lang, `/about`),
   };
 }
 

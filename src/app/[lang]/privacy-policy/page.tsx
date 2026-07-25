@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="mb-10">
@@ -16,12 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const dict = await getDictionary(lang as any) as any;
   const m = dict.legal || {};
   return {
-    title: m.privacyTitle || 'Privacy Policy | Auto Fix Data',
+    title: metadataTitle(m.privacyTitle || 'Privacy Policy | Auto Fix Data'),
     description: m.privacyDesc || 'Auto Fix Data privacy policy.',
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/privacy-policy`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/privacy-policy`])),
-    }
+    alternates: await buildAlternates(lang, `/privacy-policy`)
   };
 }
 

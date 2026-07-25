@@ -3,37 +3,32 @@ import { getAllPostsMeta } from '@/lib/blog';
 import { getDictionary } from '@/dictionaries/getDictionary';
 import { Clock, Calendar, ArrowRight, Tag } from 'lucide-react';
 import type { Metadata } from 'next';
-
-const SITE = 'https://www.workshopdata.us';
+import { buildAlternates, openGraphForPath } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   const dict = await getDictionary(lang as any) as any;
   const b = dict.blog || {};
-  const canonical = `${SITE}/${lang}/blog`;
   const title = b.indexTitle || 'Auto Fix Data Technical Blog — Mechanic Guides & Repair Tips';
   const description = b.indexDesc || 'In-depth automotive repair guides, OEM wiring diagram tutorials, diagnostic deep-dives and software comparisons for professional mechanics.';
 
   return {
     title,
     description,
-    alternates: {
-      canonical,
-      languages: { en: '/en/blog', fr: '/fr/blog', es: '/es/blog', de: '/de/blog', it: '/it/blog', ar: '/ar/blog', he: '/he/blog' }
-    },
-    openGraph: {
+    alternates: buildAlternates(lang, '/blog'),
+    openGraph: openGraphForPath(lang, '/blog', {
       type: 'website',
-      url: canonical,
       title,
       description,
-      images: [{ url: `${SITE}/images/diagnostics-abstract.png`, width: 1200, height: 630, alt: title }],
+      images: [{ url: `${SITE_URL}/images/diagnostics-abstract.png`, width: 1200, height: 630, alt: title }],
       siteName: 'AutoFixData',
-    },
+    }),
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [`${SITE}/images/diagnostics-abstract.png`],
+      images: [`${SITE_URL}/images/diagnostics-abstract.png`],
       site: '@autofixdata',
     },
     robots: {
@@ -58,19 +53,19 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ lang
     "@type": "Blog",
     name: title,
     description: description,
-    url: `${SITE}/${lang}/blog`,
+    url: pageUrl(lang, '/blog'),
     publisher: {
       "@type": "Organization",
       name: "AutoFixData",
-      logo: { "@type": "ImageObject", url: `${SITE}/images/logo.png` }
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/images/logo.png` }
     },
     blogPost: posts.map(post => ({
       "@type": "BlogPosting",
       headline: post.title,
       description: post.excerpt,
-      image: post.image.startsWith('http') ? post.image : `${SITE}${post.image}`,
+      image: post.image.startsWith('http') ? post.image : `${SITE_URL}${post.image}`,
       datePublished: post.date,
-      url: `${SITE}/${lang}/blog/${post.slug}`,
+      url: pageUrl(lang, `/blog/${post.slug}`),
       author: { "@type": "Organization", name: "AutoFixData" }
     }))
   };

@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Script from 'next/script';
 import { Mail, Phone, MapPin, MessageCircle, Clock } from "lucide-react";
 import { getDictionary } from '@/dictionaries/getDictionary';
@@ -9,7 +11,7 @@ const schema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "ContactPage",
   "name": "Contact Auto Fix Data",
-  "url": "https://workshopdata.us/contact",
+  "url": `${SITE_URL}/contact`,
   "description": "Contact Auto Fix Data for sales, support or technical assistance.",
   "mainEntity": {
     "@type": "Organization",
@@ -31,12 +33,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.contact.meta.title,
+    title: metadataTitle(dict.contact.meta.title),
     description: dict.contact.meta.description,
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/contact`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/contact`])),
-    },
+    alternates: await buildAlternates(lang, `/contact`),
   };
 }
 

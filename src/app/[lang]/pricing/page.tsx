@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import PricingContent from './PricingContent';
 import { getDictionary } from '@/dictionaries/getDictionary';
 
@@ -9,12 +11,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.pricing.meta.title,
+    title: metadataTitle(dict.pricing.meta.title),
     description: dict.pricing.meta.description,
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/pricing`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/pricing`])),
-    },
+    alternates: await buildAlternates(lang, `/pricing`),
   };
 }
 
@@ -28,17 +27,12 @@ export default async function PricingPage({ params }: { params: Promise<{ lang: 
     "name": `${dict.pricing.hero.heading} — Auto Fix Data`,
     "description": dict.pricing.meta.description,
     "image": "https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/670c1a958a10046187933a85.png",
-    "url": `https://workshopdata.us/${lang}/pricing`,
+    "url": pageUrl(lang, `/pricing`),
     "brand": {
       "@type": "Brand",
       "name": "Auto Fix Data"
     },
     "sku": "AFD-PRO",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "2400"
-    },
     "offers": {
       "@type": "AggregateOffer",
       "lowPrice": "99.00",
@@ -46,7 +40,7 @@ export default async function PricingPage({ params }: { params: Promise<{ lang: 
       "priceCurrency": "GBP",
       "offerCount": "2",
       "availability": "https://schema.org/InStock",
-      "url": `https://workshopdata.us/${lang}/pricing`
+      "url": pageUrl(lang, `/pricing`)
     }
   });
 

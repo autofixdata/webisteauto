@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Link from '@/components/LocalizedLink';
 import { CheckCircle2, Database, FileText, Zap, Settings, BookOpen, ArrowRight } from "lucide-react";
 import { getDictionary } from '@/dictionaries/getDictionary';
@@ -10,12 +12,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.alldata?.meta?.title ?? 'ALLDATA Repair Data via Auto Fix Data | OEM Service Manuals & TSBs',
+    title: metadataTitle(dict.alldata?.meta?.title ?? 'ALLDATA Repair Data via Auto Fix Data | OEM Service Manuals & TSBs'),
     description: dict.alldata?.meta?.description ?? "Access ALLDATA's complete library of unedited OEM repair procedures, Technical Service Bulletins, wiring diagrams and diagnostic data through Auto Fix Data. Free 7-day trial.",
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/alldata`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/alldata`])),
-    },
+    alternates: await buildAlternates(lang, `/alldata`),
   };
 }
 
@@ -33,24 +32,19 @@ export default async function AlldataProductPage({ params }: { params: Promise<{
     "name": `${d?.hero?.heading || "ALLDATA Repair Data"} — via Auto Fix Data`,
     "image": "https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/670c1a958a10046187933a85.png",
     "description": d?.meta?.description || "Access ALLDATA's complete OEM repair procedures.",
-    "url": `https://workshopdata.us/${lang}/alldata`,
+    "url": pageUrl(lang, `/alldata`),
     "brand": {
       "@type": "Brand",
       "name": "ALLDATA"
     },
     "sku": "AFD-ALLDATA",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "1420"
-    },
     "offers": {
       "@type": "Offer",
       "name": dict.common?.freeTrial || "Free 7-Day Trial",
       "price": "0.00",
       "priceCurrency": "GBP",
       "availability": "https://schema.org/InStock",
-      "url": `https://workshopdata.us/${lang}/free-trial`
+      "url": pageUrl(lang, `/free-trial`)
     }
   });
 
@@ -184,6 +178,31 @@ export default async function AlldataProductPage({ params }: { params: Promise<{
               </details>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-afd-light border-t border-gray-100">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-afd-navy mb-8 text-center">
+            {d?.latestGuidesHeading ?? 'Latest ALLDATA & AI Guides'}
+          </h2>
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            <li>
+              <Link href="/blog/alldata-ai-repair-assistant-2026" className="block p-5 bg-white rounded-xl border border-gray-100 hover:border-afd-yellow hover:shadow-md transition-all text-afd-navy font-semibold text-sm">
+                ALLDATA AI Repair Assistant →
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog/alldata-ai-tsb-diagnostics-guide" className="block p-5 bg-white rounded-xl border border-gray-100 hover:border-afd-yellow hover:shadow-md transition-all text-afd-navy font-semibold text-sm">
+                AI TSB & Diagnostics Guide →
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog/alldata-pricing-vs-ai-bundles-2026" className="block p-5 bg-white rounded-xl border border-gray-100 hover:border-afd-yellow hover:shadow-md transition-all text-afd-navy font-semibold text-sm">
+                ALLDATA Pricing vs AI Bundles →
+              </Link>
+            </li>
+          </ul>
         </div>
       </section>
 

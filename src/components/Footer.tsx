@@ -88,11 +88,6 @@ export default function Footer({ dict, lang }: { dict: any, lang: string }) {
             </div>
           </div>
 
-          {dict.footer.schemaTrust && (
-            <p className="text-afd-slate/80 text-xs max-w-3xl mx-auto text-center mb-8 leading-relaxed border border-white/5 rounded-xl px-4 py-3 bg-white/[0.03]">
-              {dict.footer.schemaTrust}
-            </p>
-          )}
 
           <div className="pt-8 border-t border-afd-border flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-afd-slate text-sm">
@@ -103,6 +98,7 @@ export default function Footer({ dict, lang }: { dict: any, lang: string }) {
               <Link href={`/${lang}/terms-of-service`} className="hover:text-white transition-colors">{dict.footer.terms}</Link>
               <Link href={`/${lang}/gdpr`} className="hover:text-white transition-colors">{dict.footer.gdpr}</Link>
               <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Sitemap</a>
+              <a href="/feed.xml" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">RSS</a>
             </div>
           </div>
         </div>

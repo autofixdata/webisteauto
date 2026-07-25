@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
-import { getAllSitemapPaths, CHUNK_SIZE, BASE_URL, LOCALES } from '@/lib/sitemap';
+import { getAllSitemapEntries, CHUNK_SIZE, BASE_URL } from '@/lib/sitemap';
 
 export const dynamic = 'force-static';
 
 export async function GET() {
-  const allPaths = getAllSitemapPaths();
-  const totalUrls = allPaths.length * LOCALES.length;
+  const totalUrls = getAllSitemapEntries().length;
   const numChunks = Math.ceil(totalUrls / CHUNK_SIZE);
 
   const now = new Date().toISOString();

@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Link from '@/components/LocalizedLink';
 import { CheckCircle2, Activity, Database, Zap, AlertCircle, Search, ArrowRight } from "lucide-react";
 import { getDictionary } from '@/dictionaries/getDictionary';
@@ -10,12 +12,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.identifix?.meta?.title ?? 'Identifix Direct-Hit Repair Data | Auto Fix Data Reseller',
+    title: metadataTitle(dict.identifix?.meta?.title ?? 'Identifix Direct-Hit Repair Data | Auto Fix Data Reseller'),
     description: dict.identifix?.meta?.description ?? 'Access Identifix Direct-Hit diagnostic data through Auto Fix Data. Real-world fix data from 70M+ repairs. Authorised reseller. Free trial available.',
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/identifix`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/identifix`])),
-    },
+    alternates: await buildAlternates(lang, `/identifix`),
   };
 }
 
@@ -33,24 +32,19 @@ export default async function IdentifixProductPage({ params }: { params: Promise
     "name": `${d?.hero?.heading || "Identifix Direct-Hit Repair Data"} — via Auto Fix Data`,
     "image": "https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/670c1a958a10046187933a85.png",
     "description": d?.meta?.description || "Access Identifix Direct-Hit diagnostic data through Auto Fix Data.",
-    "url": `https://workshopdata.us/${lang}/identifix`,
+    "url": pageUrl(lang, `/identifix`),
     "brand": {
       "@type": "Brand",
       "name": "Identifix"
     },
     "sku": "AFD-IDENTIFIX",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "730"
-    },
     "offers": {
       "@type": "Offer",
       "name": dict.common?.freeTrial || "Free 7-Day Trial",
       "price": "0.00",
       "priceCurrency": "GBP",
       "availability": "https://schema.org/InStock",
-      "url": `https://workshopdata.us/${lang}/free-trial`
+      "url": pageUrl(lang, `/free-trial`)
     }
   });
 

@@ -372,7 +372,29 @@
         "title": "Esportazione per l'officina",
         "desc": "Esporta ogni schema in un PDF pulito da stampare o portare sul veicolo senza necessità di un secondo dispositivo."
       }
-    }
+    },
+    "faq": [
+      {
+        "q": "Gli schemi elettrici sono a colori?",
+        "a": "Sì. Tutti gli schemi elettrici di Haynes Pro e Mitchell1 sono forniti a colori, con ogni colore del filo corrispondente al suo colore fisico per un tracciamento intuitivo e veloce."
+      },
+      {
+        "q": "Posso vedere le posizioni fisiche dei componenti?",
+        "a": "Sì. I diagrammi di localizzazione mostrano l'esatta posizione fisica sul veicolo con fotografie di riferimento."
+      },
+      {
+        "q": "Quali veicoli sono coperti negli schemi elettrici?",
+        "a": "Forniamo schemi elettrici per la stragrande maggioranza dei veicoli europei e globali dal 1990 ad oggi, coprendo oltre 150 marchi."
+      },
+      {
+        "q": "Disponete di dati di cablaggio per veicoli elettrici e ibridi?",
+        "a": "Sì. Sono inclusi schemi di circuiti ad alta tensione per sistemi BEV e ibridi, con avvisi di sicurezza e procedure di isolamento."
+      },
+      {
+        "q": "Posso visualizzare i pinout dei connettori della centralina?",
+        "a": "Sì. Passa il mouse su qualsiasi connettore della centralina per vedere la tensione attesa, il tipo di segnale e i valori di massa."
+      }
+    ]
   },
   "diagnostics": {
     "meta": {
@@ -1338,5 +1360,44 @@
         "desc": "Riparazioni confermate nel mondo reale da una rete di oltre 70.000 tecnici professionisti. Direct-Hit™ incluso."
       }
     }
+  },
+  "caseStudies": {
+    "title": "Casi di Successo in Officina",
+    "subtitle": "Scopri come le officine professionali diagnosticano i guasti fino al 90% più velocemente con il nostro database.",
+    "cases": [
+      {
+        "title": "Il guasto fantasma del bus CAN",
+        "garage": "Apex Diagnostics",
+        "location": "Londra, UK",
+        "vehicle": "2019 BMW 320d (F30)",
+        "dtc": "U0100",
+        "dbUsed": "Topologia Mitchell1",
+        "estTime": "3 Ore",
+        "actTime": "12 Min",
+        "summary": "Il cliente ha riscontrato un blocco intermittente del cambio. Individuata una linea bus CAN schiacciata dietro la scatola fusibili del passeggero usando la topologia di rete."
+      },
+      {
+        "title": "La misteriosa perdita di EVAP",
+        "garage": "Garage de la Gare",
+        "location": "Lione, Francia",
+        "vehicle": "2018 Ford Transit 2.0 EcoBlue",
+        "dtc": "P0456",
+        "dbUsed": "TSB di ALLDATA",
+        "estTime": "4 Ore",
+        "actTime": "15 Min",
+        "summary": "Spia motore accesa con codice micro-perdita. Identificato un problema noto del produttore corrispondente a un TSB su una crepa nel filtro a carboni attivi."
+      },
+      {
+        "title": "Mancata diagnosi di isolamento alta tensione",
+        "garage": "AutoTuning Garage",
+        "location": "Monaco, Germania",
+        "vehicle": "2021 Toyota Prius Hybrid",
+        "dtc": "P0AA6",
+        "dbUsed": "Haynes Pro VESA",
+        "estTime": "2 Giorni",
+        "actTime": "20 Min",
+        "summary": "Eseguiti in sicurezza i passaggi di scollegamento e test di resistenza per tracciare la dispersione verso un compressore A/C corroso."
+      }
+    ]
   }
 }

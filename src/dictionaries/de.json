@@ -372,7 +372,29 @@
         "title": "Werkstatt-Export",
         "desc": "Exportieren Sie jeden Plan als sauberes PDF für die Arbeit am Fahrzeug."
       }
-    }
+    },
+    "faq": [
+      {
+        "q": "Sind die Schaltpläne in Farbe?",
+        "a": "Ja. Alle Schaltpläne von Haynes Pro und Mitchell1 werden in voller Farbe geliefert, wobei jede Kabelfarbe mit der physischen Farbe übereinstimmt, um das Verfolgen von Stromkreisen intuitiv und schnell zu gestalten."
+      },
+      {
+        "q": "Kann ich die physischen Einbauorte der Komponenten sehen?",
+        "a": "Ja. Komponenteneinbauort-Diagramme zeigen die genaue physische Position am Fahrzeug mit Referenzfotos."
+      },
+      {
+        "q": "Welche Fahrzeuge werden bei den Schaltplänen abgedeckt?",
+        "a": "Wir bieten Schaltpläne für die überwiegende Mehrheit der europäischen und globalen Fahrzeuge von 1990 bis heute, die über 150 Hersteller abdecken."
+      },
+      {
+        "q": "Haben Sie Schaltplandaten für Elektro- und Hybridfahrzeuge?",
+        "a": "Ja. Hochspannungs-Stromlaufpläne für BEV- und Hybridsysteme sind enthalten, komplett mit klaren Sicherheitswarnungen und Isolationsverfahren."
+      },
+      {
+        "q": "Kann ich die Pinbelegung der Steuergeräte-Stecker sehen?",
+        "a": "Ja. Bewegen Sie den Mauszeiger über einen Steuergerätestecker im Diagramm, um die erwartete Spannung, den Signaltyp und die Massewerte für jeden Pin zu sehen."
+      }
+    ]
   },
   "diagnostics": {
     "meta": {
@@ -1343,5 +1365,44 @@
         "desc": "Von über 70.000 professionellen Technikern bestätigte Reparaturen aus der Praxis. Inklusive Direct-Hit™."
       }
     }
+  },
+  "caseStudies": {
+    "title": "Erfolgsgeschichten aus der Werkstatt",
+    "subtitle": "Erfahren Sie, wie professionelle Werkstätten Fehler mit unserer uneditierten OEM-Datenbank bis zu 90 % schneller diagnostizieren.",
+    "cases": [
+      {
+        "title": "Der mysteriöse CAN-Bus-Ausfall",
+        "garage": "Apex Diagnostics",
+        "location": "London, UK",
+        "vehicle": "2019 BMW 320d (F30)",
+        "dtc": "U0100",
+        "dbUsed": "Mitchell1 Topologie",
+        "estTime": "3 Stunden",
+        "actTime": "12 Min",
+        "summary": "Kunde hatte sporadische Getriebesperren. Eine eingeklemmte CAN-Bus-Leitung hinter dem Sicherungskasten im Beifahrerfußraum mithilfe von Netzwerkdiagrammen lokalisiert."
+      },
+      {
+        "title": "Das rätselhafte EVAP-Leck",
+        "garage": "Garage de la Gare",
+        "location": "Lyon, Frankreich",
+        "vehicle": "2018 Ford Transit 2.0 EcoBlue",
+        "dtc": "P0456",
+        "dbUsed": "ALLDATA TSB",
+        "estTime": "4 Stunden",
+        "actTime": "15 Min",
+        "summary": "Motorkontrollleuchte an mit Feinstleckcode. Ein bekanntes Herstellerproblem identifiziert, das mit einer TSB über einen Haarriss im Aktivkohlebehälter übereinstimmte."
+      },
+      {
+        "title": "Hochspannungs-Isolationsfehler beim Hybrid",
+        "garage": "AutoTuning Garage",
+        "location": "München, Deutschland",
+        "vehicle": "2021 Toyota Prius Hybrid",
+        "dtc": "P0AA6",
+        "dbUsed": "Haynes Pro VESA",
+        "estTime": "2 Tage",
+        "actTime": "20 Min",
+        "summary": "Sichere Durchführung der Hochspannungsfreischaltung und Isolationsprüfung zur Rückverfolgung des Lecks zu einem korrodierten Klimakompressormotor."
+      }
+    ]
   }
 }

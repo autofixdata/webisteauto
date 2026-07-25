@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Link from '@/components/LocalizedLink';
 import { Zap, ZoomIn, MapPin, Search, Layers, Monitor } from "lucide-react";
 import { FAQItem } from "@/components/FAQItem";
@@ -17,24 +19,15 @@ const systems = [
   { name: "EV & Hybrid HV", desc: "High-voltage battery management, inverter, DC-DC converter and charging circuit diagrams with safety warnings.", icon: "⚡" },
 ];
 
-const faqs = [
-  { q: "Are the wiring diagrams full-colour?", a: "Yes. All wiring diagrams from Haynes Pro and Mitchell1 are delivered in full colour, with each wire colour matching its physical colour to make tracing circuits intuitive and fast." },
-  { q: "Can I see component physical locations?", a: "Yes. Component locator diagrams show the exact physical location on the vehicle with reference photographs, so you know exactly where to access the connector before you lift the bonnet." },
-  { q: "What vehicles are covered for wiring diagrams?", a: "We provide wiring diagrams for the vast majority of European and global vehicles from 1990 to present. Coverage includes all major makes: BMW, VW, Ford, Toyota, Mercedes, Renault, Peugeot, Honda, and 140+ more." },
-  { q: "Do you have EV and hybrid wiring data?", a: "Yes. High-voltage circuit diagrams for BEV and hybrid systems are included, with clear safety warnings and isolation procedures for working on live HV components." },
-  { q: "Can I view ECU connector pinouts?", a: "Yes. Hover over any ECU connector in the diagram to see expected voltage, signal type and ground values for every pin — speeding up multimeter-based diagnostics significantly." },
-];
+
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.wiring.meta.title,
+    title: metadataTitle(dict.wiring.meta.title),
     description: dict.wiring.meta.description,
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/wiring-diagrams`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/wiring-diagrams`])),
-    },
+    alternates: await buildAlternates(lang, `/wiring-diagrams`),
   };
 }
 
@@ -43,30 +36,28 @@ export default async function WiringDiagramsPage({ params }: { params: Promise<{
   const dict = await getDictionary(lang as any);
   const d = dict.wiring;
 
+  // Localized FAQs from dictionary (all 7 languages)
+  const faqs = (d.faq as Array<{ q: string; a: string }> || []).filter(f => f.q && f.a);
+
   const productSchema = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Product",
     "name": `${d.hero.heading1 || "Wiring Diagrams"} — Auto Fix Data`,
     "image": "https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/670c1a958a10046187933a85.png",
     "description": d.meta.description || "Full-colour interactive wiring diagrams, ECU pinouts and component locators.",
-    "url": `https://workshopdata.us/${lang}/wiring-diagrams`,
+    "url": pageUrl(lang, `/wiring-diagrams`),
     "brand": {
       "@type": "Brand",
       "name": "Auto Fix Data"
     },
     "sku": "AFD-WIRING",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "1530"
-    },
     "offers": {
       "@type": "Offer",
       "name": dict.common?.freeTrial || "Free 7-Day Trial",
       "price": "0.00",
       "priceCurrency": "GBP",
       "availability": "https://schema.org/InStock",
-      "url": `https://workshopdata.us/${lang}/free-trial`
+      "url": pageUrl(lang, `/free-trial`)
     }
   });
 
@@ -82,8 +73,8 @@ export default async function WiringDiagramsPage({ params }: { params: Promise<{
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: productSchema }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: productSchema }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: faqSchema }} />
 
       {/* HERO */}
       <section className="bg-afd-dark py-24 px-6 border-b border-afd-border relative overflow-hidden">
@@ -219,7 +210,7 @@ export default async function WiringDiagramsPage({ params }: { params: Promise<{
       {/* FAQ */}
       <section className="py-20 bg-afd-light border-t border-gray-100 px-6">
         <div className="max-w-[800px] mx-auto">
-          <h2 className="text-3xl font-extrabold text-afd-navy mb-10 text-center">Wiring Diagram FAQs</h2>
+          <h2 className="text-3xl font-extrabold text-afd-navy mb-10 text-center">{(d as { faqHeading?: string }).faqHeading ?? dict.common.faqTitle}</h2>
           <div className="space-y-2 bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
             {faqs.map(({ q, a }) => <FAQItem key={q} q={q} a={a} />)}
           </div>

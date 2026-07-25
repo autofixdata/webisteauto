@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Link from '@/components/LocalizedLink';
 import { BookOpen, CheckCircle2 } from "lucide-react";
 import { getDictionary } from '@/dictionaries/getDictionary';
@@ -9,12 +11,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.repairManuals.meta.title,
+    title: metadataTitle(dict.repairManuals.meta.title),
     description: dict.repairManuals.meta.description,
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/repair-manuals`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/repair-manuals`])),
-    },
+    alternates: await buildAlternates(lang, `/repair-manuals`),
   };
 }
 
@@ -29,24 +28,19 @@ export default async function RepairManualsPage({ params }: { params: Promise<{ 
     "name": `${d.hero?.heading1 || "OEM Repair Manuals"} — Auto Fix Data`,
     "image": "https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/670c1a958a10046187933a85.png",
     "description": d.meta?.description || "Access OEM-level repair manuals for 150M+ vehicles.",
-    "url": `https://workshopdata.us/${lang}/repair-manuals`,
+    "url": pageUrl(lang, `/repair-manuals`),
     "brand": {
       "@type": "Brand",
       "name": "Auto Fix Data"
     },
     "sku": "AFD-MANUALS",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "1840"
-    },
     "offers": {
       "@type": "Offer",
       "name": dict.common?.freeTrial || "Free 7-Day Trial",
       "price": "0.00",
       "priceCurrency": "GBP",
       "availability": "https://schema.org/InStock",
-      "url": `https://workshopdata.us/${lang}/free-trial`
+      "url": pageUrl(lang, `/free-trial`)
     }
   });
 

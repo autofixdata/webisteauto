@@ -3,12 +3,12 @@ import './globals.css';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { getDictionary } from '@/dictionaries/getDictionary';
-import Script from 'next/script';
 import ConsentAwareAnalytics from '@/components/ConsentAwareAnalytics';
 import CookieConsentBanner from '@/components/CookieConsentBanner';
 import DeferredLeadConnector from '@/components/DeferredLeadConnector';
 import { getConsentBootstrapInlineScript } from '@/lib/cookieConsent';
 import { openGraphLocaleForLang } from '@/lib/ogLocale';
+import { SITE_URL, pageUrl } from '@/lib/siteConfig';
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const m = dict.common.meta;
 
   return {
-    metadataBase: new URL('https://workshopdata.us'),
+    metadataBase: new URL(SITE_URL),
     title: {
       default: m.defaultTitle,
       template: '%s | Auto Fix Data',
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     openGraph: {
       type: 'website',
       locale: openGraphLocaleForLang(lang),
-      url: `https://workshopdata.us/${lang}`,
+      url: pageUrl(lang, ''),
       siteName: 'Auto Fix Data',
       title: m.defaultTitle,
       description: m.defaultDesc,
@@ -81,7 +81,7 @@ export default async function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Auto Fix Data',
-    url: 'https://workshopdata.us',
+    url: SITE_URL,
     logo: 'https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/678a6476a12015eea3a7c3b1.png',
     contactPoint: {
       '@type': 'ContactPoint',
@@ -102,7 +102,7 @@ export default async function RootLayout({
     name: 'Auto Fix Data',
     operatingSystem: 'Web browser, iOS, Android',
     applicationCategory: 'BusinessApplication',
-    url: 'https://workshopdata.us',
+    url: SITE_URL,
     developer: { '@type': 'Organization', name: 'Auto Fix Data Team' },
     image: 'https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/678a6476a12015eea3a7c3b1.png',
     offers: { '@type': 'Offer', price: '99.00', priceCurrency: 'GBP' },
@@ -112,12 +112,12 @@ export default async function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'Auto Fix Data',
-    url: 'https://workshopdata.us',
+    url: SITE_URL,
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://workshopdata.us/en/search?q={search_term_string}',
+        urlTemplate: `${SITE_URL}/en/search?q={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
     },
@@ -126,20 +126,18 @@ export default async function RootLayout({
   const cookieConsent = dictionary.common.cookieConsent;
 
   return (
-    <html lang={lang} dir={dir}>
+    <html lang={lang} dir={dir} suppressHydrationWarning>
       <head>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{
+        <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{
           __html: JSON.stringify(orgJsonLd),
         }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{
+        <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{
           __html: JSON.stringify(softwareJsonLd),
         }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{
+        <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{
           __html: JSON.stringify(webSiteJsonLd),
         }} />
-      </head>
-      <body>
         <script
           id="afd-consent-bootstrap"
           suppressHydrationWarning
@@ -147,16 +145,31 @@ export default async function RootLayout({
             __html: getConsentBootstrapInlineScript(),
           }}
         />
-        <Script
+        {/* Google Tag Manager header*/}
+        <script
           id="google-tag-manager"
-          strategy="afterInteractive"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T6MPMMT7');`,
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-T6MPMMT7');`,
           }}
         />
+        {/* End Google Tag Manager */}
+      </head>
+      <body suppressHydrationWarning>
+        {/* Google Tag Manager footer(noscript) */}
         <noscript>
-          <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T6MPMMT7" height="0" width="0" style={{ display: 'none', visibility: 'hidden' }} />
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-T6MPMMT7"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
         </noscript>
+        {/* End Google Tag Manager (noscript) */}
 
         <div className="flex flex-col min-h-screen font-sans">
           <Navigation dict={dictionary} lang={lang} />

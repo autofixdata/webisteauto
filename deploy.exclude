@@ -1,0 +1,22 @@
+# Files/folders to omit from CyberPanel upload ZIP (see DEPLOY.md)
+.git/
+node_modules/
+.next/
+out/
+.DS_Store
+**/.DS_Store
+.github/
+.cursor/
+.vercel/
+.env
+.env.*
+*.log
+npm-debug.log*
+build*.txt
+out.html
+tools/
+public/sitemap.xml
+public/sitemap-0.xml
+deploy/
+autofixdata-deploy/
+autofixdata-deploy.zip

@@ -1,4 +1,4 @@
-import { getPost, getAllSlugs, getAllPostsMeta } from '@/lib/blog';
+import { getPost, getAllPostsMeta, getResolvableBlogParams } from '@/lib/blog';
 import { getDictionary } from '@/dictionaries/getDictionary';
 import { notFound } from 'next/navigation';
 import { Calendar, User, Clock, ChevronRight, Home, Tag } from 'lucide-react';
@@ -6,13 +6,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import type { Metadata } from 'next';
+import { buildBlogAlternates, metadataTitle, openGraphForPath } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 
-const LANGS = ['en', 'fr', 'es', 'de', 'it', 'ar', 'he'];
-const SITE = 'https://www.workshopdata.us';
+export const dynamicParams = true;
+export const revalidate = 86400; // Cache blog pages for 24h
 
 export async function generateStaticParams() {
-  const slugs = getAllSlugs();
-  return LANGS.flatMap(lang => slugs.map(slug => ({ lang, slug })));
+  return getResolvableBlogParams();
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string; slug: string }> }): Promise<Metadata> {
@@ -20,21 +21,19 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const post = getPost(lang, slug);
   if (!post) return { title: 'Not Found' };
 
-  const canonical = `${SITE}/${lang}/blog/${slug}`;
-  const ogImage = post.image?.startsWith('http') ? post.image : `${SITE}${post.image}`;
+  const canonical = pageUrl(lang, `/blog/${slug}`);
+  const ogImage = post.image?.startsWith('http') ? post.image : `${SITE_URL}${post.image}`;
+
+  const blogPath = `/blog/${slug}`;
 
   return {
-    title: `${post.title} | AutoFixData Blog`,
+    title: metadataTitle(`${post.title} | AutoFixData Blog`),
     description: post.excerpt,
     authors: [{ name: post.author }],
     keywords: post.tags?.join(', '),
-    alternates: {
-      canonical,
-      languages: Object.fromEntries(LANGS.map(l => [l, `${SITE}/${l}/blog/${slug}`]))
-    },
-    openGraph: {
+    alternates: buildBlogAlternates(lang, slug),
+    openGraph: openGraphForPath(lang, blogPath, {
       type: 'article',
-      url: canonical,
       title: post.title,
       description: post.excerpt,
       images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
@@ -43,7 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       authors: [post.author],
       tags: post.tags,
       siteName: 'AutoFixData',
-    },
+    }),
     twitter: {
       card: 'summary_large_image',
       title: post.title,
@@ -124,8 +123,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ lang:
   const cta = dict.cta || {};
   const isRtl = lang === 'ar' || lang === 'he';
 
-  const canonical = `${SITE}/${lang}/blog/${slug}`;
-  const ogImage = post.image?.startsWith('http') ? post.image : `${SITE}${post.image}`;
+  const canonical = pageUrl(lang, `/blog/${slug}`);
+  const ogImage = post.image?.startsWith('http') ? post.image : `${SITE_URL}${post.image}`;
   const wordCount = post.content.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
   const heroSrc = post.image!;
   const heroRemoteUnoptimized =
@@ -141,11 +140,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ lang:
     datePublished: post.date,
     dateModified: post.date,
     wordCount,
-    author: [{ '@type': 'Organization', name: 'AutoFixData', url: SITE }],
+    author: [{ '@type': 'Organization', name: 'AutoFixData', url: SITE_URL }],
     publisher: {
       '@type': 'Organization',
       name: 'AutoFixData',
-      logo: { '@type': 'ImageObject', url: `${SITE}/images/logo.png`, width: 200, height: 60 }
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/images/logo.png`, width: 200, height: 60 }
     },
     inLanguage: lang,
     isAccessibleForFree: true,
@@ -167,8 +166,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ lang:
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/${lang}` },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE}/${lang}/blog` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: pageUrl(lang, '') },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: pageUrl(lang, '/blog') },
       { '@type': 'ListItem', position: 3, name: post.title, item: canonical },
     ]
   };

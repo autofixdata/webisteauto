@@ -39,6 +39,9 @@ out.html
 # vercel
 .vercel
 
+# deploy pack output
+/deploy/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

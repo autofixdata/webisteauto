@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
 import Link from '@/components/LocalizedLink';
 import { BookOpen, ChevronRight, Zap, Activity, Search } from 'lucide-react';
 import { getDictionary } from '@/dictionaries/getDictionary';
@@ -135,12 +136,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.glossary.meta.title,
+    title: metadataTitle(dict.glossary.meta.title),
     description: dict.glossary.meta.description,
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/glossary`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/glossary`])),
-    },
+    alternates: await buildAlternates(lang, `/glossary`),
     keywords: ['automotive diagnostics glossary', 'OBD2 terminology', 'DTC definition', 'scan tool terms', 'automotive acronyms', 'CAN bus explained', 'ECU diagnostic terms'],
   };
 }

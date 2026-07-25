@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import { Shield, Cookie, Eye, Trash2, Download, Lock } from "lucide-react";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
@@ -33,12 +35,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const dict = await getDictionary(lang as any) as any;
   const m = dict.legal || {};
   return {
-    title: m.gdprTitle || 'GDPR & Cookie Policy | Auto Fix Data',
+    title: metadataTitle(m.gdprTitle || 'GDPR & Cookie Policy | Auto Fix Data'),
     description: m.gdprDesc || 'Information regarding Auto Fix Data GDPR compliance.',
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/gdpr`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/gdpr`])),
-    }
+    alternates: await buildAlternates(lang, `/gdpr`)
   };
 }
 

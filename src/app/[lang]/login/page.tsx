@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Link from '@/components/LocalizedLink';
 import { ExternalLink, Lock, ArrowRight } from "lucide-react";
 
@@ -11,12 +13,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const dict = await getDictionary(lang as any) as any;
   const m = dict.auth || {};
   return {
-    title: m.loginTitle || 'Database Login | Auto Fix Data',
+    title: metadataTitle(m.loginTitle || 'Database Login | Auto Fix Data'),
     description: m.loginDesc || 'Sign in to your automotive workshop database.',
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/login`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/login`])),
-    }
+    alternates: await buildAlternates(lang, `/login`)
   };
 }
 
@@ -92,7 +91,7 @@ export default async function LoginPage({ params }: { params: Promise<{ lang: st
     "@type": "WebPage",
     "name": l.title || "Database Login | Auto Fix Data",
     "description": l.subtitle || "Access your automotive workshop database.",
-    "url": `https://workshopdata.us/${lang}/login`
+    "url": pageUrl(lang, `/login`)
   });
 
   return (

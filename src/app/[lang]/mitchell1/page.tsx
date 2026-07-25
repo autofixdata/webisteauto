@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { buildAlternates, metadataTitle } from '@/lib/metadata';
+import { pageUrl, SITE_URL } from '@/lib/siteConfig';
 import Link from '@/components/LocalizedLink';
 import { CheckCircle2, Database, FileText, Zap, Activity, Clock, ArrowRight } from "lucide-react";
 import { getDictionary } from '@/dictionaries/getDictionary';
@@ -10,12 +12,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const dict = await getDictionary(lang as any);
   return {
-    title: dict.mitchell1?.meta?.title ?? 'Mitchell1 ProDemand Repair Data | Auto Fix Data Reseller',
+    title: metadataTitle(dict.mitchell1?.meta?.title ?? 'Mitchell1 ProDemand Repair Data | Auto Fix Data Reseller'),
     description: dict.mitchell1?.meta?.description ?? 'Access Mitchell1 ProDemand repair data, wiring diagrams and TSBs through Auto Fix Data. Authorised Mitchell1 reseller. Full OEM data. Start free today.',
-    alternates: {
-      canonical: `https://workshopdata.us/${lang}/mitchell1`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `https://workshopdata.us/${l}/mitchell1`])),
-    },
+    alternates: await buildAlternates(lang, `/mitchell1`),
   };
 }
 
@@ -33,24 +32,19 @@ export default async function Mitchell1ProductPage({ params }: { params: Promise
     "name": `${d?.hero?.heading || "Mitchell1 ProDemand Repair Data"} — via Auto Fix Data`,
     "image": "https://assets.cdn.filesafe.space/Ojp9CgccP9bDnBtQ25kU/media/670c1a958a10046187933a85.png",
     "description": d?.meta?.description || "Access Mitchell1 ProDemand repair data.",
-    "url": `https://workshopdata.us/${lang}/mitchell1`,
+    "url": pageUrl(lang, `/mitchell1`),
     "brand": {
       "@type": "Brand",
       "name": "Mitchell1"
     },
     "sku": "AFD-MITCHELL",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "1050"
-    },
     "offers": {
       "@type": "Offer",
       "name": dict.common?.freeTrial || "Free 7-Day Trial",
       "price": "0.00",
       "priceCurrency": "GBP",
       "availability": "https://schema.org/InStock",
-      "url": `https://workshopdata.us/${lang}/free-trial`
+      "url": pageUrl(lang, `/free-trial`)
     }
   });
 
