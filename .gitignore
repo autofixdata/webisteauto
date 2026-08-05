@@ -39,6 +39,9 @@ out.html
 # vercel
 .vercel
 
+# open-next
+.open-next/
+
 # deploy pack output
 /deploy/
 
